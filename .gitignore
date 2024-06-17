@@ -1,3 +1,10 @@
+### Settings ###
+application.yml
+*.json
+!options.json
+.idea/
+out/
+
 HELP.md
 .gradle
 build/
