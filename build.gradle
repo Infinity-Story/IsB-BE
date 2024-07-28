@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-// JPA Data
+	// JPA Data
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
 	// Redis
@@ -48,6 +48,14 @@ dependencies {
 
 	// MariaDB Driver
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+
+	// JUnit
+	testImplementation("org.junit.vintage:junit-vintage-engine") {
+		exclude group: "org.hamcrest", module: "hamcrest-core"
+	}
+
+	// Swagger
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
 
 }
 
