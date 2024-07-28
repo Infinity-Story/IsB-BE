@@ -20,31 +20,31 @@ public class Post {
     private int postCode;
 
     @Column(name = "post_title")
-    private Integer postTitle;
+    private String postTitle;
 
     @Column(name = "post_enroll_date")
-    private Integer postEnrollDate;
+    private String postEnrollDate;
 
     @Column(name = "post_sub_title")
-    private Integer postSubTitle;
+    private String postSubTitle;
 
     @Column(name = "post_content")
-    private Integer postContent;
+    private String postContent;
 
     @Column(name = "post_report_count")
-    private Integer postReportCount;
+    private int postReportCount;
 
     @Column(name = "post_view_count")
-    private Integer postViewCount;
+    private int postViewCount;
 
     @Column(name = "post_like_count")
-    private Integer postLikeCount;
+    private int postLikeCount;
 
     @Column(name = "post_dislike_count")
-    private Integer postDislikeCount;
+    private int postDislikeCount;
 
     @Column(name = "post_reply_count")
-    private Integer postReplyCount;
+    private int postReplyCount;
 
     @ManyToOne
     @JoinColumn(name = "member_code")

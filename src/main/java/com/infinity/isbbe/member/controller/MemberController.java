@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/member")
-@Tag(name = "회원 정보API", description = "Member Info")
+@Tag(name = "회원 정보 API", description = "Member Info")
 public class MemberController {
 
     private final MemberService memberService;
@@ -27,7 +27,7 @@ public class MemberController {
     @Operation(summary = "회원 전체 조회", description = "회원을 전체 조회합니다.")
     @GetMapping("/list")
     public ResponseEntity<List<MemberDTO>> getAllMembers() {
-        List<MemberDTO> memberList= memberService.getAllMember();
+        List<MemberDTO> memberList = memberService.getAllMember();
         return ResponseEntity.ok(memberList);
     }
 
