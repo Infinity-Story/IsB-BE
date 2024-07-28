@@ -21,10 +21,10 @@ public class Reply {
     private int replyCode;
 
     @Column(name = "reply_content")
-    private int replyContent;
+    private String replyContent;
 
     @Column(name = "reply_enroll_date")
-    private int replyEnrollDate;
+    private String replyEnrollDate;
 
     @Column(name = "reply_report_count")
     private int replyReportCount;
