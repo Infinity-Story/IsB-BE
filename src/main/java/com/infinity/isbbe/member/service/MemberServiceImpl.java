@@ -25,6 +25,6 @@ public class MemberServiceImpl implements MemberService {
         List<MemberDTO> memberDTOList = new ArrayList<>();
 
         memberList.forEach(member -> memberDTOList.add(new MemberDTO(member)));
-        return memberDTOList;ss
+        return memberDTOList;
     }
 }
