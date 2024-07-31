@@ -20,7 +20,11 @@ public class PostDTO {
     private int postLikeCount;
     private int postDislikeCount;
     private int postReplyCount;
+
+
     private int memberCode;
+    private String memberName;
+    private String memberId;
 
     public PostDTO(Post post) {
         this.postCode = post.getPostCode();
@@ -33,6 +37,9 @@ public class PostDTO {
         this.postLikeCount = post.getPostLikeCount();
         this.postDislikeCount = post.getPostDislikeCount();
         this.postReplyCount = post.getPostReplyCount();
+
         this.memberCode =post.getMember().getMemberCode();
+        this.memberName =post.getMember().getMemberName();
+        this.memberId =post.getMember().getMemberId();
     }
 }

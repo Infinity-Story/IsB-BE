@@ -35,7 +35,7 @@ public class MemberController {
     }
 
     @Operation(summary = "회원 코드로 회원 조회", description = "특정 회원을 조회합니다.")
-    @GetMapping("/list/{memberCode}")
+    @GetMapping("/detail/{memberCode}")
     public ResponseEntity<List<ResponseMember>> getMemberByMemberCode(@PathVariable int memberCode) {
         List<MemberDTO> memberDTOS = memberService.getMemberByCode(memberCode);
         List<ResponseMember> responseMember = new ArrayList<>();

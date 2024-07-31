@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface PostService {
     List<PostDTO> getAllPost();
+
+    List<PostDTO> getPostByCode(int postCode);
 }

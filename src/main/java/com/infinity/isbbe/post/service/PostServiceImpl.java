@@ -26,4 +26,12 @@ public class PostServiceImpl implements PostService{
         postList.forEach(post -> postDTOList.add(new PostDTO(post)));
         return postDTOList;
     }
+
+    @Override
+    public List<PostDTO> getPostByCode(int postCode) {
+        List<Post> postList = postRepository.findByPostCode(postCode);
+        List<PostDTO> postDTOS = new ArrayList<>();
+        postList.forEach(post -> postDTOS.add(new PostDTO(post)));
+        return postDTOS;
+    }
 }
