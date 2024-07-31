@@ -25,4 +25,12 @@ public class ReplyServiceImpl implements ReplyService {
         replyList.forEach(reply -> replyDTOList.add(new ReplyDTO(reply)));
         return replyDTOList;
     }
+
+    @Override
+    public List<ReplyDTO> getReplyByCode(int replyCode) {
+        List<Reply> replyList = replyRepository.findByReplyCode(replyCode);
+        List<ReplyDTO> replyDTOS = new ArrayList<>();
+        replyList.forEach(reply -> replyDTOS.add(new ReplyDTO(reply)));
+        return replyDTOS;
+    }
 }

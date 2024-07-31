@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ReplyService {
     List<ReplyDTO> getAllReply();
+
+    List<ReplyDTO> getReplyByCode(int replyCode);
 }

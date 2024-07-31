@@ -38,6 +38,7 @@ public class ResponsePost {
         this.postLikeCount = post.getPostLikeCount();
         this.postDislikeCount = post.getPostDislikeCount();
         this.postReplyCount = post.getPostReplyCount();
+
         this.memberCode = post.getMember().getMemberCode();
         this.getMemberName = post.getMember().getMemberName();
         this.getMemberId = post.getMember().getMemberId();
@@ -54,6 +55,7 @@ public class ResponsePost {
         this.postLikeCount = postDTO.getPostLikeCount();
         this.postDislikeCount = postDTO.getPostDislikeCount();
         this.postReplyCount = postDTO.getPostReplyCount();
+
         this.memberCode = postDTO.getMemberCode();
         this.getMemberName = postDTO.getMemberName();
         this.getMemberId = postDTO.getMemberId();

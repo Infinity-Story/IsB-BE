@@ -16,7 +16,12 @@ public class ReplyDTO {
     private int replyReportCount;
     private int replyLikeCount;
     private int replyDislikeCount;
+
+
     private int memberCode;
+    private String memberName;
+    private String memberId;
+
     private int postCode;
 
     public ReplyDTO(Reply reply) {
@@ -26,7 +31,11 @@ public class ReplyDTO {
         this.replyReportCount = reply.getReplyReportCount();
         this.replyLikeCount = reply.getReplyLikeCount();
         this.replyDislikeCount = reply.getReplyDislikeCount();
+
         this.memberCode = reply.getMember().getMemberCode();
+        this.memberName = reply.getMember().getMemberName();
+        this.memberId = reply.getMember().getMemberId();
+
         this.postCode = reply.getPost().getPostCode();
     }
 }
