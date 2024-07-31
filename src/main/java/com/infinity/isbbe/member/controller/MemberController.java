@@ -44,7 +44,7 @@ public class MemberController {
     }
 
     @Operation(summary = "회원 등록", description = "신규 회원을 등록합니다.")
-    @GetMapping("/create")
+    @PostMapping("/create")
     public ResponseEntity<String> createMember(@RequestBody RequestMember request) {
         return memberService.createMember(request);
     }

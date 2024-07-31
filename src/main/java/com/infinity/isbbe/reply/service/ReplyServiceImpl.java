@@ -1,10 +1,21 @@
 package com.infinity.isbbe.reply.service;
 
+import com.infinity.isbbe.log.etc.LogStatus;
+import com.infinity.isbbe.log.service.LogService;
+import com.infinity.isbbe.member.aggregate.Member;
+import com.infinity.isbbe.member.repository.MemberRepository;
+import com.infinity.isbbe.post.aggregate.Post;
+import com.infinity.isbbe.post.repository.PostRepository;
 import com.infinity.isbbe.reply.aggregate.Reply;
+import com.infinity.isbbe.reply.aggregate.RequestReply;
 import com.infinity.isbbe.reply.dto.ReplyDTO;
 import com.infinity.isbbe.reply.repository.ReplyRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +23,15 @@ import java.util.List;
 public class ReplyServiceImpl implements ReplyService {
 
     private final ReplyRepository replyRepository;
+    private final MemberRepository memberRepository;
+    private final LogService logService;
+    private final PostRepository postRepository;
 
-    public ReplyServiceImpl(ReplyRepository replyRepository) {
+    public ReplyServiceImpl(ReplyRepository replyRepository, MemberRepository memberRepository, LogService logService, PostRepository postRepository) {
         this.replyRepository = replyRepository;
+        this.memberRepository = memberRepository;
+        this.logService = logService;
+        this.postRepository = postRepository;
     }
 
     @Override
@@ -32,5 +49,42 @@ public class ReplyServiceImpl implements ReplyService {
         List<ReplyDTO> replyDTOS = new ArrayList<>();
         replyList.forEach(reply -> replyDTOS.add(new ReplyDTO(reply)));
         return replyDTOS;
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<String> createReply(RequestReply request) {
+        Reply reply = new Reply();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = LocalDateTime.now().format(formatter);
+
+        List<Member> memberList = memberRepository.findByMemberCode(request.getMemberCode());
+
+        if (memberList == null || memberList.isEmpty()) {
+            return ResponseEntity.badRequest().body("해당 회원이 존재하지 않습니다.");
+        }
+
+        List<Post> postList = postRepository.findByPostCode(request.getPostCode());
+
+        if (postList == null || postList.isEmpty()) {
+            return ResponseEntity.badRequest().body("해당 게시물이 존재하지 않습니다.");
+        }
+
+        Member member = memberList.get(0);
+        Post post = postList.get(0);
+        reply.setMember(member);
+        reply.setPost(post);
+
+        reply.setReplyContent(request.getReplyContent());
+        reply.setReplyEnrollDate(formattedDateTime);
+        reply.setReplyReportCount(request.getReplyReportCount());
+        reply.setReplyLikeCount(request.getReplyLikeCount());
+        reply.setReplyDislikeCount(request.getReplyDislikeCount());
+
+        Reply savedReply = replyRepository.save(reply);
+
+        logService.saveLog("root", LogStatus.등록, savedReply.getReplyContent(), "Reply");
+
+        return ResponseEntity.ok("댓글 작성 완료!");
     }
 }

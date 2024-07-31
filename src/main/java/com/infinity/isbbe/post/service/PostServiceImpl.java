@@ -1,10 +1,19 @@
 package com.infinity.isbbe.post.service;
 
+import com.infinity.isbbe.log.etc.LogStatus;
+import com.infinity.isbbe.log.service.LogService;
+import com.infinity.isbbe.member.aggregate.Member;
+import com.infinity.isbbe.member.repository.MemberRepository;
 import com.infinity.isbbe.post.aggregate.Post;
+import com.infinity.isbbe.post.aggregate.RequestPost;
 import com.infinity.isbbe.post.dto.PostDTO;
 import com.infinity.isbbe.post.repository.PostRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +21,13 @@ import java.util.List;
 public class PostServiceImpl implements PostService{
 
     private final PostRepository postRepository;
+    private final MemberRepository memberRepository;
+    private final LogService logService;
 
-    public PostServiceImpl(PostRepository postRepository) {
+    public PostServiceImpl(PostRepository postRepository, MemberRepository memberRepository, LogService logService) {
         this.postRepository = postRepository;
+        this.memberRepository = memberRepository;
+        this.logService = logService;
     }
 
 
@@ -33,5 +46,38 @@ public class PostServiceImpl implements PostService{
         List<PostDTO> postDTOS = new ArrayList<>();
         postList.forEach(post -> postDTOS.add(new PostDTO(post)));
         return postDTOS;
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<String> createPost(RequestPost request) {
+        Post post = new Post();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = LocalDateTime.now().format(formatter);
+
+        List<Member> memberList = memberRepository.findByMemberCode(request.getMemberCode());
+
+        if (memberList == null || memberList.isEmpty()) {
+            return ResponseEntity.badRequest().body("해당 회원이 존재하지 않습니다.");
+        }
+
+        Member member = memberList.get(0);
+        post.setMember(member);
+
+        post.setPostContent(request.getPostContent());
+        post.setPostTitle(request.getPostTitle());
+        post.setPostEnrollDate(formattedDateTime);
+        post.setPostSubTitle(request.getPostSubTitle());
+        post.setPostReportCount(request.getPostReportCount());
+        post.setPostViewCount(request.getPostViewCount());
+        post.setPostLikeCount(request.getPostLikeCount());
+        post.setPostDislikeCount(request.getPostDislikeCount());
+        post.setPostReplyCount(request.getPostReplyCount());
+
+        Post savedPost = postRepository.save(post);
+
+        logService.saveLog("root", LogStatus.등록, savedPost.getPostTitle(), "Post");
+
+        return ResponseEntity.ok("게시물 등록 완료!");
     }
 }

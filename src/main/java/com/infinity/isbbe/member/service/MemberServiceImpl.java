@@ -1,5 +1,7 @@
 package com.infinity.isbbe.member.service;
 
+import com.infinity.isbbe.log.etc.LogStatus;
+import com.infinity.isbbe.log.service.LogService;
 import com.infinity.isbbe.member.aggregate.Member;
 import com.infinity.isbbe.member.aggregate.RequestMember;
 import com.infinity.isbbe.member.dto.MemberDTO;
@@ -17,9 +19,11 @@ import java.util.List;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
+    private final LogService logService;
 
-    public MemberServiceImpl(MemberRepository memberRepository) {
+    public MemberServiceImpl(MemberRepository memberRepository, LogService logService) {
         this.memberRepository = memberRepository;
+        this.logService = logService;
     }
 
     @Override
@@ -56,5 +60,9 @@ public class MemberServiceImpl implements MemberService {
         member.setMemberEnrollDate(formattedDateTime);
 
         Member savedMember = memberRepository.save(member);
+
+        logService.saveLog("root", LogStatus.등록, savedMember.getMemberName(), "Member");
+
+        return ResponseEntity.ok("신규 회원 등록 완료");
     }
 }
