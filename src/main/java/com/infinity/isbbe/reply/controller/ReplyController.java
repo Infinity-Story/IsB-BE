@@ -1,15 +1,13 @@
 package com.infinity.isbbe.reply.controller;
 
+import com.infinity.isbbe.reply.aggregate.RequestReply;
 import com.infinity.isbbe.reply.aggregate.ResponseReply;
 import com.infinity.isbbe.reply.dto.ReplyDTO;
 import com.infinity.isbbe.reply.service.ReplyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,5 +39,11 @@ public class ReplyController {
             responseReply.add(new ResponseReply(replyDTO));
         });
         return ResponseEntity.ok(responseReply);
+    }
+
+    @Operation(summary = "댓글 등록", description = "신규 댓글을 등록합니다.")
+    @PostMapping("/create")
+    public ResponseEntity<String> createReply(@RequestBody RequestReply request) {
+        return replyService.createReply(request);
     }
 }
