@@ -30,4 +30,5 @@ public class PostController {
         List<PostDTO> postList = postService.getAllPost();
         return ResponseEntity.ok(postList);
     }
+
 }

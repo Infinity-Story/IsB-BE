@@ -27,4 +27,13 @@ public class MemberServiceImpl implements MemberService {
         memberList.forEach(member -> memberDTOList.add(new MemberDTO(member)));
         return memberDTOList;
     }
+
+    @Override
+    @Transactional
+    public List<MemberDTO> getMemberByCode(int memberCode) {
+        List<Member> memberList = memberRepository.findByMemberCode(memberCode);
+        List<MemberDTO> memberDTOS = new ArrayList<>();
+        memberList.forEach(member -> memberDTOS.add(new MemberDTO(member)));
+        return memberDTOS;
+    }
 }
