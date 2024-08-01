@@ -12,4 +12,6 @@ public interface MemberService {
     List<MemberDTO> getMemberByCode(int memberCode);
 
     ResponseEntity<String> createMember(RequestMember request);
+
+    ResponseEntity<String> updateMember(int memberCode, RequestMember request);
 }
