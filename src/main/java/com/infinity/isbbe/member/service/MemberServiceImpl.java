@@ -6,6 +6,7 @@ import com.infinity.isbbe.member.aggregate.Member;
 import com.infinity.isbbe.member.aggregate.RequestMember;
 import com.infinity.isbbe.member.dto.MemberDTO;
 import com.infinity.isbbe.member.repository.MemberRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,5 +65,27 @@ public class MemberServiceImpl implements MemberService {
         logService.saveLog("root", LogStatus.등록, savedMember.getMemberName(), "Member");
 
         return ResponseEntity.ok("신규 회원 등록 완료");
+    }
+
+    @Override
+    public ResponseEntity<String> updateMember(int memberCode, RequestMember request) {
+        Member member = memberRepository.findById(memberCode)
+                .orElseThrow(() -> new EntityNotFoundException("해당 회원이 존재하지 않습니다."));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = LocalDateTime.now().format(formatter);
+
+        member.setMemberName(request.getMemberName());
+        member.setMemberEmail(request.getMemberEmail());
+        member.setMemberPw(request.getMemberPw());
+        member.setMemberId(request.getMemberId());
+        member.setMemberPhone(request.getMemberPhone());
+        member.setMemberUpdateDate(formattedDateTime);
+
+        Member updatedMember = memberRepository.save(member);
+
+        logService.saveLog("root", LogStatus.수정, updatedMember.getMemberName(), "Member");
+
+        return ResponseEntity.ok("회원 수정 완료");
     }
 }

@@ -12,4 +12,6 @@ public interface ReplyService {
     List<ReplyDTO> getReplyByCode(int replyCode);
 
     ResponseEntity<String> createReply(RequestReply request);
+
+    ResponseEntity<String> updateReply(int replyCode, RequestReply request);
 }

@@ -13,6 +13,7 @@ public class ReplyDTO {
     private int replyCode;
     private String replyContent;
     private String replyEnrollDate;
+    private String replyUpdateDate;
     private int replyReportCount;
     private int replyLikeCount;
     private int replyDislikeCount;
@@ -28,6 +29,7 @@ public class ReplyDTO {
         this.replyCode = reply.getReplyCode();
         this.replyContent = reply.getReplyContent();
         this.replyEnrollDate = reply.getReplyEnrollDate();
+        this.replyUpdateDate = reply.getReplyUpdateDate();
         this.replyReportCount = reply.getReplyReportCount();
         this.replyLikeCount = reply.getReplyLikeCount();
         this.replyDislikeCount = reply.getReplyDislikeCount();

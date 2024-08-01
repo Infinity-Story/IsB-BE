@@ -30,6 +30,9 @@ public class Member {
     @Column(name = "member_enroll_date")
     private String memberEnrollDate;
 
+    @Column(name = "member_update_date")
+    private String memberUpdateDate;
+
     @Column(name = "member_email")
     private String memberEmail;
 

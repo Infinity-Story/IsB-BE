@@ -14,6 +14,7 @@ public class PostDTO {
     private String postTitle;
     private String postSubTitle;
     private String postEnrollDate;
+    private String postUpdateDate;
     private String postContent;
     private int postReportCount;
     private int postViewCount;
@@ -31,6 +32,7 @@ public class PostDTO {
         this.postTitle = post.getPostTitle();
         this.postSubTitle = post.getPostSubTitle();
         this.postEnrollDate = post.getPostEnrollDate();
+        this.postUpdateDate = post.getPostUpdateDate();
         this.postContent = post.getPostContent();
         this.postReportCount = post.getPostReportCount();
         this.postViewCount = post.getPostViewCount();

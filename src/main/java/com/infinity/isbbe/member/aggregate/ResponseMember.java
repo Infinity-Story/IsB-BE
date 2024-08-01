@@ -19,6 +19,7 @@ public class ResponseMember {
     private String memberEmail;
     private String memberPhone;
     private String memberEnrollDate;
+    private String memberUpdateDate;
 
     public ResponseMember(Member member) {
         this.memberCode = member.getMemberCode();
@@ -28,6 +29,7 @@ public class ResponseMember {
         this.memberEmail = member.getMemberEmail();
         this.memberPhone = member.getMemberPhone();
         this.memberEnrollDate = member.getMemberEnrollDate();
+        this.memberUpdateDate = member.getMemberUpdateDate();
     }
 
     public ResponseMember(MemberDTO memberDTO) {
@@ -38,5 +40,6 @@ public class ResponseMember {
         this.memberEmail = memberDTO.getMemberEmail();
         this.memberPhone = memberDTO.getMemberPhone();
         this.memberEnrollDate = memberDTO.getMemberEnrollDate();
+        this.memberUpdateDate = memberDTO.getMemberUpdateDate();
     }
 }

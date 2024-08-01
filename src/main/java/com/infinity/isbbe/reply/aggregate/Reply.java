@@ -26,6 +26,9 @@ public class Reply {
     @Column(name = "reply_enroll_date")
     private String replyEnrollDate;
 
+    @Column(name = "reply_update_date")
+    private String replyUpdateDate;
+
     @Column(name = "reply_report_count")
     private int replyReportCount;
 

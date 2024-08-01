@@ -8,6 +8,7 @@ import com.infinity.isbbe.post.aggregate.Post;
 import com.infinity.isbbe.post.aggregate.RequestPost;
 import com.infinity.isbbe.post.dto.PostDTO;
 import com.infinity.isbbe.post.repository.PostRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,5 +80,38 @@ public class PostServiceImpl implements PostService{
         logService.saveLog("root", LogStatus.등록, savedPost.getPostTitle(), "Post");
 
         return ResponseEntity.ok("게시물 등록 완료!");
+    }
+
+    @Override
+    public ResponseEntity<String> updatePost(int postCode, RequestPost request) {
+        Post post = postRepository.findById(postCode)
+                .orElseThrow(() -> new EntityNotFoundException("해당 게시물이 존재하지 않습니다."));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = LocalDateTime.now().format(formatter);
+
+        List<Member> memberList = memberRepository.findByMemberCode(request.getMemberCode());
+
+        if (memberList == null || memberList.isEmpty()) {
+            return ResponseEntity.badRequest().body("해당 회원이 존재하지 않습니다.");
+        }
+        Member member = memberList.get(0);
+        post.setMember(member);
+
+        post.setPostContent(request.getPostContent());
+        post.setPostTitle(request.getPostTitle());
+        post.setPostUpdateDate(formattedDateTime);
+        post.setPostSubTitle(request.getPostSubTitle());
+        post.setPostReportCount(request.getPostReportCount());
+        post.setPostViewCount(request.getPostViewCount());
+        post.setPostLikeCount(request.getPostLikeCount());
+        post.setPostDislikeCount(request.getPostDislikeCount());
+        post.setPostReplyCount(request.getPostReplyCount());
+
+        Post updatedPost = postRepository.save(post);
+
+        logService.saveLog("root", LogStatus.수정, updatedPost.getPostTitle(), "Post");
+
+        return ResponseEntity.ok("게시물 수정 완료!");
     }
 }

@@ -49,4 +49,10 @@ public class MemberController {
         return memberService.createMember(request);
     }
 
+    @Operation(summary = "회원 수정", description = "기존 회원의 정보를 수정합니다.")
+    @PutMapping("/update/{memberCode}")
+    public ResponseEntity<String> updateMember(@PathVariable int memberCode, @RequestBody RequestMember request) {
+        return memberService.updateMember(memberCode,request);
+    }
+
 }

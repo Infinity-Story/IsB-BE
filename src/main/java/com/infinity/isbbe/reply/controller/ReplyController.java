@@ -46,4 +46,10 @@ public class ReplyController {
     public ResponseEntity<String> createReply(@RequestBody RequestReply request) {
         return replyService.createReply(request);
     }
+
+    @Operation(summary = "댓글 수정", description = "기존 댓글을 수정합니다.")
+    @PutMapping("update/{replyCode}")
+    public ResponseEntity<String> updateReply(@PathVariable int replyCode, @RequestBody RequestReply request) {
+        return replyService.updateReply(replyCode,request);
+    }
 }
