@@ -12,4 +12,6 @@ public interface PostService {
     List<PostDTO> getPostByCode(int postCode);
 
     ResponseEntity<String> createPost(RequestPost request);
+
+    ResponseEntity<String> updatePost(int postCode, RequestPost request);
 }

@@ -48,4 +48,10 @@ public class PostController {
     public ResponseEntity<String> createPost(@RequestBody RequestPost request) {
         return postService.createPost(request);
     }
+
+    @Operation(summary = "게시물 수정", description = "기존 게시물을 수정합니다.")
+    @PutMapping("/update/{postCode}")
+    public ResponseEntity<String> updatePost(@PathVariable int postCode, @RequestBody RequestPost request) {
+        return postService.updatePost(postCode, request);
+    }
 }
