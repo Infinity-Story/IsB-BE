@@ -25,6 +25,9 @@ public class Post {
     @Column(name = "post_enroll_date")
     private String postEnrollDate;
 
+    @Column(name = "post_update_date")
+    private String postUpdateDate;
+
     @Column(name = "post_sub_title")
     private String postSubTitle;
 

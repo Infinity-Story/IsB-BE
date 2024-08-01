@@ -15,6 +15,7 @@ public class ResponsePost {
     private int postCode;
     private String postTitle;
     private String postEnrollDate;
+    private String postUpdateDate;
     private String postSubTitle;
     private String postContent;
     private int postReportCount;
@@ -31,6 +32,7 @@ public class ResponsePost {
         this.postCode = post.getPostCode();
         this.postTitle = post.getPostTitle();
         this.postEnrollDate = post.getPostEnrollDate();
+        this.postUpdateDate = post.getPostUpdateDate();
         this.postSubTitle = post.getPostSubTitle();
         this.postContent = post.getPostContent();
         this.postReportCount = post.getPostReportCount();
@@ -48,6 +50,7 @@ public class ResponsePost {
         this.postCode = postDTO.getPostCode();
         this.postTitle = postDTO.getPostTitle();
         this.postEnrollDate = postDTO.getPostEnrollDate();
+        this.postUpdateDate = postDTO.getPostUpdateDate();
         this.postSubTitle = postDTO.getPostSubTitle();
         this.postContent = postDTO.getPostContent();
         this.postReportCount = postDTO.getPostReportCount();

@@ -15,6 +15,7 @@ public class ResponseReply {
     private int replyCode;
     private String replyContent;
     private String replyEnrollDate;
+    private String replyUpdateDate;
     private int replyReportCount;
     private int replyLikeCount;
     private int replyDislikeCount;
@@ -29,6 +30,7 @@ public class ResponseReply {
         this.replyCode = reply.getReplyCode();
         this.replyContent = reply.getReplyContent();
         this.replyEnrollDate = reply.getReplyEnrollDate();
+        this.replyUpdateDate = reply.getReplyUpdateDate();
         this.replyReportCount = reply.getReplyReportCount();
         this.replyLikeCount = reply.getReplyLikeCount();
         this.replyDislikeCount = reply.getReplyDislikeCount();
@@ -44,6 +46,7 @@ public class ResponseReply {
         this.replyCode = replyDTO.getReplyCode();
         this.replyContent = replyDTO.getReplyContent();
         this.replyEnrollDate = replyDTO.getReplyEnrollDate();
+        this.replyUpdateDate = replyDTO.getReplyUpdateDate();
         this.replyReportCount = replyDTO.getReplyReportCount();
         this.replyLikeCount = replyDTO.getReplyLikeCount();
         this.replyDislikeCount = replyDTO.getReplyDislikeCount();

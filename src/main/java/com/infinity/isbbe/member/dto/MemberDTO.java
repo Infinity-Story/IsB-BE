@@ -15,6 +15,7 @@ public class MemberDTO {
     private String memberPw;
     private String memberName;
     private String memberEnrollDate;
+    private String memberUpdateDate;
     private String memberEmail;
     private String memberPhone;
 
@@ -24,6 +25,7 @@ public class MemberDTO {
         this.memberPw = member.getMemberPw();
         this.memberName = member.getMemberName();
         this.memberEnrollDate = member.getMemberEnrollDate();
+        this.memberUpdateDate = member.getMemberUpdateDate();
         this.memberEmail = member.getMemberEmail();
         this.memberPhone = member.getMemberPhone();
     }
