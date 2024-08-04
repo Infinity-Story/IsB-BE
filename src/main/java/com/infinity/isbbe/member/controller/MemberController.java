@@ -55,4 +55,27 @@ public class MemberController {
         return memberService.updateMember(memberCode,request);
     }
 
+    @Operation(summary = "회원 상태 수정", description = "회원 상태를 비활성화로 수정합니다.")
+    @PutMapping("update/off/{memberCode}")
+    public ResponseEntity<String> updateMemberOff(@PathVariable int memberCode) {
+        return memberService.updateMemberOff(memberCode);
+    }
+
+    @Operation(summary = "회원 상태 수정", description = "회원 상태를 휴면으로 수정합니다.")
+    @PutMapping("update/sleep/{memberCode}")
+    public ResponseEntity<String> updateMemberSleep(@PathVariable int memberCode) {
+        return memberService.updateMemberSleep(memberCode);
+    }
+
+    @Operation(summary = "회원 상태 수정", description = "회원 상태를 제재로 수정합니다.")
+    @PutMapping("update/stop/{memberCode}")
+    public ResponseEntity<String> updateMemberStop(@PathVariable int memberCode) {
+        return memberService.updateMemberStop(memberCode);
+    }
+
+    @Operation(summary = "회원 상태 수정", description = "회원 상태를 활성화로 수정합니다.")
+    @PutMapping("update/on/{memberCode}")
+    public ResponseEntity<String> updateMemberOn(@PathVariable int memberCode) {
+        return memberService.updateMemberOn(memberCode);
+    }
 }

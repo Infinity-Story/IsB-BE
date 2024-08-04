@@ -9,6 +9,7 @@ import com.infinity.isbbe.post.repository.PostRepository;
 import com.infinity.isbbe.reply.aggregate.Reply;
 import com.infinity.isbbe.reply.aggregate.RequestReply;
 import com.infinity.isbbe.reply.dto.ReplyDTO;
+import com.infinity.isbbe.reply.etc.REPLY_STATUS;
 import com.infinity.isbbe.reply.repository.ReplyRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
@@ -90,6 +91,7 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<String> updateReply(int replyCode, RequestReply request) {
         Reply reply = replyRepository.findById(replyCode)
                 .orElseThrow(() -> new EntityNotFoundException("해당 댓글이 존재하지 않습니다."));
@@ -123,5 +125,53 @@ public class ReplyServiceImpl implements ReplyService {
         logService.saveLog("root", LogStatus.수정, updatedReply.getReplyContent(), "Reply");
 
         return ResponseEntity.ok("댓글 수정 완료!");
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<String> updateReplyBlind(int replyCode) {
+        Reply reply = replyRepository.findById(replyCode).orElseThrow(()-> new EntityNotFoundException("해당 댓글이 존재하지 않습니다."));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = LocalDateTime.now().format(formatter);
+
+        reply.setReplyStatus(REPLY_STATUS.블라인드);
+        reply.setReplyUpdateDate(formattedDateTime);
+
+        Reply updatedReply = replyRepository.save(reply);
+
+        logService.saveLog("root", LogStatus.수정, updatedReply.getReplyContent(), "Reply");
+        return ResponseEntity.ok("댓글상태 블라인드로 수정 완료");
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<String> updateReplyDelete(int replyCode) {
+        Reply reply = replyRepository.findById(replyCode).orElseThrow(()-> new EntityNotFoundException("해당 댓글이 존재하지 않습니다."));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = LocalDateTime.now().format(formatter);
+
+        reply.setReplyStatus(REPLY_STATUS.삭제처리);
+        reply.setReplyUpdateDate(formattedDateTime);
+
+        Reply updatedReply = replyRepository.save(reply);
+
+        logService.saveLog("root", LogStatus.수정, updatedReply.getReplyContent(), "Reply");
+        return ResponseEntity.ok("댓글상태 삭제처리로 수정 완료");
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<String> updateReplyOn(int replyCode) {
+        Reply reply = replyRepository.findById(replyCode).orElseThrow(()-> new EntityNotFoundException("해당 댓글이 존재하지 않습니다."));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = LocalDateTime.now().format(formatter);
+
+        reply.setReplyStatus(REPLY_STATUS.활성화);
+        reply.setReplyUpdateDate(formattedDateTime);
+
+        Reply updatedReply = replyRepository.save(reply);
+
+        logService.saveLog("root", LogStatus.수정, updatedReply.getReplyContent(), "Reply");
+        return ResponseEntity.ok("댓글상태 활성화로 수정 완료");
     }
 }

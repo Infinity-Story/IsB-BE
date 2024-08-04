@@ -5,6 +5,7 @@ import com.infinity.isbbe.log.service.LogService;
 import com.infinity.isbbe.member.aggregate.Member;
 import com.infinity.isbbe.member.aggregate.RequestMember;
 import com.infinity.isbbe.member.dto.MemberDTO;
+import com.infinity.isbbe.member.etc.MEMBER_STATUS;
 import com.infinity.isbbe.member.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
@@ -68,6 +69,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<String> updateMember(int memberCode, RequestMember request) {
         Member member = memberRepository.findById(memberCode)
                 .orElseThrow(() -> new EntityNotFoundException("해당 회원이 존재하지 않습니다."));
@@ -87,5 +89,69 @@ public class MemberServiceImpl implements MemberService {
         logService.saveLog("root", LogStatus.수정, updatedMember.getMemberName(), "Member");
 
         return ResponseEntity.ok("회원 수정 완료");
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<String> updateMemberOff(int memberCode) {
+        Member member = memberRepository.findById(memberCode).orElseThrow(()-> new EntityNotFoundException("해당 회원이 존재하지 않습니다."));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = LocalDateTime.now().format(formatter);
+
+        member.setMemberStatus(MEMBER_STATUS.비활성화);
+        member.setMemberUpdateDate(formattedDateTime);
+
+        Member updatedMember = memberRepository.save(member);
+
+        logService.saveLog("root",LogStatus.수정, updatedMember.getMemberName(), "Member");
+        return ResponseEntity.ok("회원상태 비활성화로 수정 완료");
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<String> updateMemberSleep(int memberCode) {
+        Member member = memberRepository.findById(memberCode).orElseThrow(()-> new EntityNotFoundException("해당 회원이 존재하지 않습니다."));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = LocalDateTime.now().format(formatter);
+
+        member.setMemberStatus(MEMBER_STATUS.휴면);
+        member.setMemberUpdateDate(formattedDateTime);
+
+        Member updatedMember = memberRepository.save(member);
+
+        logService.saveLog("root",LogStatus.수정, updatedMember.getMemberName(), "Member");
+        return ResponseEntity.ok("회원상태 휴면으로 수정 완료");
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<String> updateMemberStop(int memberCode) {
+        Member member = memberRepository.findById(memberCode).orElseThrow(()-> new EntityNotFoundException("해당 회원이 존재하지 않습니다."));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = LocalDateTime.now().format(formatter);
+
+        member.setMemberStatus(MEMBER_STATUS.제재);
+        member.setMemberUpdateDate(formattedDateTime);
+
+        Member updatedMember = memberRepository.save(member);
+
+        logService.saveLog("root",LogStatus.수정, updatedMember.getMemberName(), "Member");
+        return ResponseEntity.ok("회원상태 제재로 수정 완료");
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<String> updateMemberOn(int memberCode) {
+        Member member = memberRepository.findById(memberCode).orElseThrow(()-> new EntityNotFoundException("해당 회원이 존재하지 않습니다."));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = LocalDateTime.now().format(formatter);
+
+        member.setMemberStatus(MEMBER_STATUS.활성화);
+        member.setMemberUpdateDate(formattedDateTime);
+
+        Member updatedMember = memberRepository.save(member);
+
+        logService.saveLog("root",LogStatus.수정, updatedMember.getMemberName(), "Member");
+        return ResponseEntity.ok("회원상태 활성화로 수정 완료");
     }
 }
