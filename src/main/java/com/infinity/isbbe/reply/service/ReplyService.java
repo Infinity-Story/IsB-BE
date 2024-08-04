@@ -16,4 +16,6 @@ public interface ReplyService {
     ResponseEntity<String> updateReply(int replyCode, RequestReply request);
 
     ResponseEntity<String> updateReplyBlind(int replyCode);
+
+    ResponseEntity<String> updateReplyDelete(int replyCode);
 }

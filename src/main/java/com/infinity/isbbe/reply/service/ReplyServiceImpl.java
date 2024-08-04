@@ -142,4 +142,20 @@ public class ReplyServiceImpl implements ReplyService {
         logService.saveLog("root", LogStatus.수정, updatedReply.getReplyContent(), "Reply");
         return ResponseEntity.ok("댓글상태 블라인드로 수정 완료");
     }
+
+    @Override
+    @Transactional
+    public ResponseEntity<String> updateReplyDelete(int replyCode) {
+        Reply reply = replyRepository.findById(replyCode).orElseThrow(()-> new EntityNotFoundException("해당 댓글이 존재하지 않습니다."));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = LocalDateTime.now().format(formatter);
+
+        reply.setReplyStatus(REPLY_STATUS.삭제처리);
+        reply.setReplyUpdateDate(formattedDateTime);
+
+        Reply updatedReply = replyRepository.save(reply);
+
+        logService.saveLog("root", LogStatus.수정, updatedReply.getReplyContent(), "Reply");
+        return ResponseEntity.ok("댓글상태 삭제처리로 수정 완료");
+    }
 }
