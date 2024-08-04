@@ -64,4 +64,10 @@ public class ReplyController {
     public ResponseEntity<String> updateReplyDelete(@PathVariable int replyCode) {
         return replyService.updateReplyDelete(replyCode);
     }
+
+    @Operation(summary = "댓글 상태 수정", description = "댓글 상태를 활성화로 수정합니다.")
+    @PutMapping("update/on/{replyCode}")
+    public ResponseEntity<String> updateReplyOn(@PathVariable int replyCode) {
+        return replyService.updateReplyOn(replyCode);
+    }
 }
