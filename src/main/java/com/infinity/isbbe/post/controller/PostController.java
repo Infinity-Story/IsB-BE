@@ -60,4 +60,10 @@ public class PostController {
     public ResponseEntity<String> updatePostBlind(@PathVariable int postCode) {
         return postService.updatePostBlind(postCode);
     }
+
+    @Operation(summary = "게시물 상태 수정", description = "게시물 상태를 삭제처리로 수정합니다.")
+    @PutMapping("update/delete/{postCode}")
+    public ResponseEntity<String> updatePostDelete(@PathVariable int postCode) {
+        return postService.updatePostDelete(postCode);
+    }
 }

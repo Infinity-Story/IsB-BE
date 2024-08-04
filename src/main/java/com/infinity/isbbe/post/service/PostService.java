@@ -16,4 +16,6 @@ public interface PostService {
     ResponseEntity<String> updatePost(int postCode, RequestPost request);
 
     ResponseEntity<String> updatePostBlind(int postCode);
+
+    ResponseEntity<String> updatePostDelete(int postCode);
 }

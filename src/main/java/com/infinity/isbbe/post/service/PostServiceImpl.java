@@ -133,4 +133,20 @@ public class PostServiceImpl implements PostService{
         return ResponseEntity.ok("게시물상태 블라인드로 수정 완료");
     }
 
+    @Override
+    @Transactional
+    public ResponseEntity<String> updatePostDelete(int postCode) {
+        Post post = postRepository.findById(postCode).orElseThrow(()-> new EntityNotFoundException("해당 게시물이 존재하지 않습니다."));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = LocalDateTime.now().format(formatter);
+
+        post.setPostStatus(POST_STATUS.삭제처리);
+        post.setPostUpdateDate(formattedDateTime);
+
+        Post updatedPost = postRepository.save(post);
+
+        logService.saveLog("root", LogStatus.수정, updatedPost.getPostTitle(), "Post");
+        return ResponseEntity.ok("게시물상태 삭제처리로 수정 완료");
+    }
+
 }
