@@ -66,4 +66,10 @@ public class PostController {
     public ResponseEntity<String> updatePostDelete(@PathVariable int postCode) {
         return postService.updatePostDelete(postCode);
     }
+
+    @Operation(summary = "게시물 상태 수정", description = "게시물 상태를 활성화로 수정합니다.")
+    @PutMapping("update/on/{postCode}")
+    public ResponseEntity<String> updatePostOn(@PathVariable int postCode) {
+        return postService.updatePostOn(postCode);
+    }
 }
