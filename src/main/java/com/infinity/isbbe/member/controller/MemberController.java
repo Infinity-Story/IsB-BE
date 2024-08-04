@@ -60,4 +60,10 @@ public class MemberController {
     public ResponseEntity<String> updateMemberOff(@PathVariable int memberCode) {
         return memberService.updateMemberOff(memberCode);
     }
+
+    @Operation(summary = "회원 상태 수정", description = "회원 상태를 휴면로 수정합니다.")
+    @PutMapping("update/sleep/{memberCode}")
+    public ResponseEntity<String> updateMemberSleep(@PathVariable int memberCode) {
+        return memberService.updateMemberSleep(memberCode);
+    }
 }

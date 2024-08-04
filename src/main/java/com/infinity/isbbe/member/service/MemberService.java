@@ -16,4 +16,6 @@ public interface MemberService {
     ResponseEntity<String> updateMember(int memberCode, RequestMember request);
 
     ResponseEntity<String> updateMemberOff(int memberCode);
+
+    ResponseEntity<String> updateMemberSleep(int memberCode);
 }
