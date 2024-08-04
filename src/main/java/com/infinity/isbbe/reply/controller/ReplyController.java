@@ -52,4 +52,10 @@ public class ReplyController {
     public ResponseEntity<String> updateReply(@PathVariable int replyCode, @RequestBody RequestReply request) {
         return replyService.updateReply(replyCode,request);
     }
+
+    @Operation(summary = "댓글 상태 수정", description = "댓글 상태를 블라인드로 수정합니다.")
+    @PutMapping("update/blind/{replyCode}")
+    public ResponseEntity<String> updateReplyBlind(@PathVariable int replyCode) {
+        return replyService.updateReplyBlind(replyCode);
+    }
 }
