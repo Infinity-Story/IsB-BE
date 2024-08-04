@@ -14,4 +14,6 @@ public interface PostService {
     ResponseEntity<String> createPost(RequestPost request);
 
     ResponseEntity<String> updatePost(int postCode, RequestPost request);
+
+    ResponseEntity<String> updatePostBlind(int postCode);
 }

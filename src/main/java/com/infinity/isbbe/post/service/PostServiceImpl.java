@@ -7,6 +7,7 @@ import com.infinity.isbbe.member.repository.MemberRepository;
 import com.infinity.isbbe.post.aggregate.Post;
 import com.infinity.isbbe.post.aggregate.RequestPost;
 import com.infinity.isbbe.post.dto.PostDTO;
+import com.infinity.isbbe.post.etc.POST_STATUS;
 import com.infinity.isbbe.post.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
@@ -83,6 +84,7 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
+    @Transactional
     public ResponseEntity<String> updatePost(int postCode, RequestPost request) {
         Post post = postRepository.findById(postCode)
                 .orElseThrow(() -> new EntityNotFoundException("해당 게시물이 존재하지 않습니다."));
@@ -114,4 +116,21 @@ public class PostServiceImpl implements PostService{
 
         return ResponseEntity.ok("게시물 수정 완료!");
     }
+
+    @Override
+    @Transactional
+    public ResponseEntity<String> updatePostBlind(int postCode) {
+        Post post = postRepository.findById(postCode).orElseThrow(()-> new EntityNotFoundException("해당 게시물이 존재하지 않습니다."));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = LocalDateTime.now().format(formatter);
+
+        post.setPostStatus(POST_STATUS.블라인드);
+        post.setPostUpdateDate(formattedDateTime);
+
+        Post updatedPost = postRepository.save(post);
+
+        logService.saveLog("root", LogStatus.수정, updatedPost.getPostTitle(), "Post");
+        return ResponseEntity.ok("게시물상태 블라인드로 수정 완료");
+    }
+
 }

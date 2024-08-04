@@ -108,6 +108,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<String> updateMemberSleep(int memberCode) {
         Member member = memberRepository.findById(memberCode).orElseThrow(()-> new EntityNotFoundException("해당 회원이 존재하지 않습니다."));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -123,6 +124,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<String> updateMemberStop(int memberCode) {
         Member member = memberRepository.findById(memberCode).orElseThrow(()-> new EntityNotFoundException("해당 회원이 존재하지 않습니다."));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
