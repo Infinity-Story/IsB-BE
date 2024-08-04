@@ -20,4 +20,6 @@ public interface MemberService {
     ResponseEntity<String> updateMemberSleep(int memberCode);
 
     ResponseEntity<String> updateMemberStop(int memberCode);
+
+    ResponseEntity<String> updateMemberOn(int memberCode);
 }

@@ -72,4 +72,10 @@ public class MemberController {
     public ResponseEntity<String> updateMemberStop(@PathVariable int memberCode) {
         return memberService.updateMemberStop(memberCode);
     }
+
+    @Operation(summary = "회원 상태 수정", description = "회원 상태를 활성화로 수정합니다.")
+    @PutMapping("update/on/{memberCode}")
+    public ResponseEntity<String> updateMemberOn(@PathVariable int memberCode) {
+        return memberService.updateMemberOn(memberCode);
+    }
 }

@@ -138,4 +138,19 @@ public class MemberServiceImpl implements MemberService {
         logService.saveLog("root",LogStatus.수정, updatedMember.getMemberName(), "Member");
         return ResponseEntity.ok("회원상태 제재로 수정 완료");
     }
+
+    @Override
+    public ResponseEntity<String> updateMemberOn(int memberCode) {
+        Member member = memberRepository.findById(memberCode).orElseThrow(()-> new EntityNotFoundException("해당 회원이 존재하지 않습니다."));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = LocalDateTime.now().format(formatter);
+
+        member.setMemberStatus(MEMBER_STATUS.활성화);
+        member.setMemberUpdateDate(formattedDateTime);
+
+        Member updatedMember = memberRepository.save(member);
+
+        logService.saveLog("root",LogStatus.수정, updatedMember.getMemberName(), "Member");
+        return ResponseEntity.ok("회원상태 활성화로 수정 완료");
+    }
 }
