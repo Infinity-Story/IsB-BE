@@ -14,4 +14,6 @@ public interface MemberService {
     ResponseEntity<String> createMember(RequestMember request);
 
     ResponseEntity<String> updateMember(int memberCode, RequestMember request);
+
+    ResponseEntity<String> updateMemberOff(int memberCode);
 }

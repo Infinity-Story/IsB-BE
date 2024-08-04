@@ -1,5 +1,6 @@
 package com.infinity.isbbe.member.aggregate;
 
+import com.infinity.isbbe.member.etc.MEMBER_STATUS;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,4 +39,8 @@ public class Member {
 
     @Column(name = "member_phone")
     private String memberPhone;
+
+    @Column(name = "member_status")
+    @Enumerated(EnumType.STRING)
+    private MEMBER_STATUS memberStatus;
 }

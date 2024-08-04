@@ -1,6 +1,7 @@
 package com.infinity.isbbe.reply.dto;
 
 import com.infinity.isbbe.reply.aggregate.Reply;
+import com.infinity.isbbe.reply.etc.REPLY_STATUS;
 import lombok.*;
 
 @Getter
@@ -17,6 +18,7 @@ public class ReplyDTO {
     private int replyReportCount;
     private int replyLikeCount;
     private int replyDislikeCount;
+    private REPLY_STATUS replyStatus;
 
 
     private int memberCode;
@@ -33,6 +35,7 @@ public class ReplyDTO {
         this.replyReportCount = reply.getReplyReportCount();
         this.replyLikeCount = reply.getReplyLikeCount();
         this.replyDislikeCount = reply.getReplyDislikeCount();
+        this.replyStatus = reply.getReplyStatus();
 
         this.memberCode = reply.getMember().getMemberCode();
         this.memberName = reply.getMember().getMemberName();

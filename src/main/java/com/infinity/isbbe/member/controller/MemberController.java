@@ -55,4 +55,9 @@ public class MemberController {
         return memberService.updateMember(memberCode,request);
     }
 
+    @Operation(summary = "회원 상태 수정", description = "회원 상태를 비활성화로 수정합니다.")
+    @PutMapping("update/off/{memberCode}")
+    public ResponseEntity<String> updateMemberOff(@PathVariable int memberCode) {
+        return memberService.updateMemberOff(memberCode);
+    }
 }

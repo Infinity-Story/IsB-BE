@@ -1,5 +1,6 @@
 package com.infinity.isbbe.member.aggregate;
 
+import com.infinity.isbbe.member.etc.MEMBER_STATUS;
 import lombok.*;
 
 @AllArgsConstructor
@@ -16,5 +17,5 @@ public class RequestMember {
     private String memberEmail;
     private String memberPhone;
     private String memberEnrollDate;
-
+    private MEMBER_STATUS memberStatus;
 }

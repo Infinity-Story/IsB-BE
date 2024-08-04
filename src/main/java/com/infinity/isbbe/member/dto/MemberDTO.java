@@ -1,6 +1,7 @@
 package com.infinity.isbbe.member.dto;
 
 import com.infinity.isbbe.member.aggregate.Member;
+import com.infinity.isbbe.member.etc.MEMBER_STATUS;
 import lombok.*;
 
 @Getter
@@ -18,6 +19,7 @@ public class MemberDTO {
     private String memberUpdateDate;
     private String memberEmail;
     private String memberPhone;
+    private MEMBER_STATUS memberStatus;
 
     public MemberDTO(Member member) {
         this.memberCode = member.getMemberCode();
@@ -28,5 +30,6 @@ public class MemberDTO {
         this.memberUpdateDate = member.getMemberUpdateDate();
         this.memberEmail = member.getMemberEmail();
         this.memberPhone = member.getMemberPhone();
+        this.memberStatus = member.getMemberStatus();
     }
 }

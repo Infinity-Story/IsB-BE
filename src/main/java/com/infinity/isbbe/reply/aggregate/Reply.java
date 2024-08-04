@@ -2,6 +2,7 @@ package com.infinity.isbbe.reply.aggregate;
 
 import com.infinity.isbbe.member.aggregate.Member;
 import com.infinity.isbbe.post.aggregate.Post;
+import com.infinity.isbbe.reply.etc.REPLY_STATUS;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -37,6 +38,10 @@ public class Reply {
 
     @Column(name = "reply_dislike_count")
     private int replyDislikeCount;
+
+    @Column(name = "reply_status")
+    @Enumerated(EnumType.STRING)
+    private REPLY_STATUS replyStatus;
 
     @ManyToOne
     @JoinColumn(name = "member_code")
