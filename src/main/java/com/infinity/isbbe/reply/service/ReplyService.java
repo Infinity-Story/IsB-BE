@@ -1,6 +1,7 @@
 package com.infinity.isbbe.reply.service;
 
 import com.infinity.isbbe.reply.aggregate.RequestReply;
+import com.infinity.isbbe.reply.aggregate.ResponseReply;
 import com.infinity.isbbe.reply.dto.ReplyDTO;
 import org.springframework.http.ResponseEntity;
 
@@ -20,4 +21,6 @@ public interface ReplyService {
     ResponseEntity<String> updateReplyDelete(int replyCode);
 
     ResponseEntity<String> updateReplyOn(int replyCode);
+
+    List<ResponseReply> getReplyMemberList(int memberCode);
 }

@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface ReplyRepository extends JpaRepository<Reply, Integer> {
     List<Reply> findByReplyCode(int replyCode);
+
+    List<Reply> findAllByMemberMemberCode(int memberCode);
 }

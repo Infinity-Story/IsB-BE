@@ -70,4 +70,11 @@ public class ReplyController {
     public ResponseEntity<String> updateReplyOn(@PathVariable int replyCode) {
         return replyService.updateReplyOn(replyCode);
     }
+
+    @Operation(summary = "회원의 댓글 조회", description = "특정 회원이 남긴 댓글을 조회합니다.")
+    @GetMapping("/member/{memberCode}")
+    public ResponseEntity<List<ResponseReply>> getReplyMemberList(@PathVariable int memberCode) {
+        return ResponseEntity.ok(replyService.getReplyMemberList(memberCode));
+    }
+
 }
