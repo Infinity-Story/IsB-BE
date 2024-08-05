@@ -56,20 +56,27 @@ public class PostController {
     }
 
     @Operation(summary = "게시물 상태 수정", description = "게시물 상태를 블라인드로 수정합니다.")
-    @PutMapping("update/blind/{postCode}")
+    @PutMapping("/update/blind/{postCode}")
     public ResponseEntity<String> updatePostBlind(@PathVariable int postCode) {
         return postService.updatePostBlind(postCode);
     }
 
     @Operation(summary = "게시물 상태 수정", description = "게시물 상태를 삭제처리로 수정합니다.")
-    @PutMapping("update/delete/{postCode}")
+    @PutMapping("/update/delete/{postCode}")
     public ResponseEntity<String> updatePostDelete(@PathVariable int postCode) {
         return postService.updatePostDelete(postCode);
     }
 
     @Operation(summary = "게시물 상태 수정", description = "게시물 상태를 활성화로 수정합니다.")
-    @PutMapping("update/on/{postCode}")
+    @PutMapping("/update/on/{postCode}")
     public ResponseEntity<String> updatePostOn(@PathVariable int postCode) {
         return postService.updatePostOn(postCode);
     }
+
+    @Operation(summary = "회원의 게시물 조회", description = "특정 회원이 게시한 게시물을 조회합니다.")
+    @GetMapping("/member/{memberCode}")
+    public ResponseEntity<List<ResponsePost>> getPostMemberList(@PathVariable int memberCode) {
+        return ResponseEntity.ok(postService.getPostMemberList(memberCode));
+    }
+
 }

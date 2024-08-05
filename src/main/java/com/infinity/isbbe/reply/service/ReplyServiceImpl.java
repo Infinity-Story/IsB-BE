@@ -82,6 +82,7 @@ public class ReplyServiceImpl implements ReplyService {
         reply.setReplyReportCount(request.getReplyReportCount());
         reply.setReplyLikeCount(request.getReplyLikeCount());
         reply.setReplyDislikeCount(request.getReplyDislikeCount());
+        reply.setReplyStatus(REPLY_STATUS.활성화);
 
         Reply savedReply = replyRepository.save(reply);
 

@@ -60,6 +60,7 @@ public class MemberServiceImpl implements MemberService {
         member.setMemberId(request.getMemberId());
         member.setMemberPhone(request.getMemberPhone());
         member.setMemberEnrollDate(formattedDateTime);
+        member.setMemberStatus(MEMBER_STATUS.활성화);
 
         Member savedMember = memberRepository.save(member);
 

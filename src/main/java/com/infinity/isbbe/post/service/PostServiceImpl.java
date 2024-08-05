@@ -6,6 +6,7 @@ import com.infinity.isbbe.member.aggregate.Member;
 import com.infinity.isbbe.member.repository.MemberRepository;
 import com.infinity.isbbe.post.aggregate.Post;
 import com.infinity.isbbe.post.aggregate.RequestPost;
+import com.infinity.isbbe.post.aggregate.ResponsePost;
 import com.infinity.isbbe.post.dto.PostDTO;
 import com.infinity.isbbe.post.etc.POST_STATUS;
 import com.infinity.isbbe.post.repository.PostRepository;
@@ -75,6 +76,7 @@ public class PostServiceImpl implements PostService{
         post.setPostLikeCount(request.getPostLikeCount());
         post.setPostDislikeCount(request.getPostDislikeCount());
         post.setPostReplyCount(request.getPostReplyCount());
+        post.setPostStatus(POST_STATUS.활성화);
 
         Post savedPost = postRepository.save(post);
 
@@ -163,6 +165,15 @@ public class PostServiceImpl implements PostService{
 
         logService.saveLog("root", LogStatus.수정, updatedPost.getPostTitle(), "Post");
         return ResponseEntity.ok("게시물상태 활성화로 수정 완료");
+    }
+
+    @Override
+    @Transactional
+    public List<ResponsePost> getPostMemberList(int memberCode) {
+        List<Post> posts = postRepository.findAllByMemberMemberCode(memberCode);
+        List<ResponsePost> responsePosts = new ArrayList<>();
+        posts.forEach(post -> responsePosts.add(new ResponsePost(post)));
+        return responsePosts;
     }
 
 }
