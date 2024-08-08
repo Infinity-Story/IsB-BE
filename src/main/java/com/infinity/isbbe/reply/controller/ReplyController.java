@@ -3,6 +3,7 @@ package com.infinity.isbbe.reply.controller;
 import com.infinity.isbbe.reply.aggregate.RequestReply;
 import com.infinity.isbbe.reply.aggregate.ResponseReply;
 import com.infinity.isbbe.reply.dto.ReplyDTO;
+import com.infinity.isbbe.reply.etc.REPLY_STATUS;
 import com.infinity.isbbe.reply.service.ReplyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -77,4 +78,14 @@ public class ReplyController {
         return ResponseEntity.ok(replyService.getReplyMemberList(memberCode));
     }
 
+    @Operation(summary = "댓글 상태별 조회", description = "댓글 상태를 기준으로 댓글을 조회합니다.")
+    @GetMapping("/detail/replyStatus/{replyStatus}")
+    public ResponseEntity<List<ResponseReply>> getReplyStatus(@PathVariable("replyStatus") REPLY_STATUS replyStatus) {
+        List<ReplyDTO> replyDTOS = replyService.getReplyByStatus(replyStatus);
+        List<ResponseReply> responseReply = new ArrayList<>();
+        replyDTOS.forEach(replyDTO -> {
+            responseReply.add(new ResponseReply(replyDTO));
+        });
+        return ResponseEntity.ok(responseReply);
+    }
 }

@@ -184,4 +184,12 @@ public class ReplyServiceImpl implements ReplyService {
         replies.forEach(reply -> responseReplies.add(new ResponseReply(reply)));
         return responseReplies;
     }
+
+    @Override
+    public List<ReplyDTO> getReplyByStatus(REPLY_STATUS replyStatus) {
+        List<Reply> replyList = replyRepository.findAllByReplyStatus(replyStatus);
+        List<ReplyDTO> replyDTOS = new ArrayList<>();
+        replyList.forEach(reply -> replyDTOS.add(new ReplyDTO(reply)));
+        return replyDTOS;
+    }
 }
