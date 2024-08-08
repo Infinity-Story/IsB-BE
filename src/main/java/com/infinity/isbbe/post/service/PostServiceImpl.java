@@ -176,4 +176,12 @@ public class PostServiceImpl implements PostService{
         return responsePosts;
     }
 
+    @Override
+    public List<PostDTO> getPostByStatus(POST_STATUS postStatus) {
+        List<Post> postList = postRepository.findAllByPostStatus(postStatus);
+        List<PostDTO> postDTOs = new ArrayList<>();
+        postList.forEach(post -> postDTOs.add(new PostDTO(post)));
+        return postDTOs;
+    }
+
 }

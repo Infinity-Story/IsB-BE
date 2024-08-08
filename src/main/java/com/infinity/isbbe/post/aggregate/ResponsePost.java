@@ -1,6 +1,7 @@
 package com.infinity.isbbe.post.aggregate;
 
 import com.infinity.isbbe.post.dto.PostDTO;
+import com.infinity.isbbe.post.etc.POST_STATUS;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ public class ResponsePost {
     private int postLikeCount;
     private int postDislikeCount;
     private int postReplyCount;
+    private POST_STATUS postStatus;
 
     private int memberCode;
     private String getMemberName;
@@ -40,6 +42,7 @@ public class ResponsePost {
         this.postLikeCount = post.getPostLikeCount();
         this.postDislikeCount = post.getPostDislikeCount();
         this.postReplyCount = post.getPostReplyCount();
+        this.postStatus = post.getPostStatus();
 
         this.memberCode = post.getMember().getMemberCode();
         this.getMemberName = post.getMember().getMemberName();
@@ -58,6 +61,7 @@ public class ResponsePost {
         this.postLikeCount = postDTO.getPostLikeCount();
         this.postDislikeCount = postDTO.getPostDislikeCount();
         this.postReplyCount = postDTO.getPostReplyCount();
+        this.postStatus = postDTO.getPostStatus();
 
         this.memberCode = postDTO.getMemberCode();
         this.getMemberName = postDTO.getMemberName();

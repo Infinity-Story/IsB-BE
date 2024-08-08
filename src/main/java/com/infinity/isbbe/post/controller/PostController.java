@@ -3,6 +3,7 @@ package com.infinity.isbbe.post.controller;
 import com.infinity.isbbe.post.aggregate.RequestPost;
 import com.infinity.isbbe.post.aggregate.ResponsePost;
 import com.infinity.isbbe.post.dto.PostDTO;
+import com.infinity.isbbe.post.etc.POST_STATUS;
 import com.infinity.isbbe.post.service.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -78,5 +79,17 @@ public class PostController {
     public ResponseEntity<List<ResponsePost>> getPostMemberList(@PathVariable int memberCode) {
         return ResponseEntity.ok(postService.getPostMemberList(memberCode));
     }
+
+    @Operation(summary = "게시물 상태별 조회", description = "게시물 상태를 기준으로 게시물을 조회합니다.")
+    @GetMapping("/detail/postStatus/{postStatus}")
+    public ResponseEntity<List<ResponsePost>> getPostByStatus(@PathVariable("postStatus") POST_STATUS postStatus) {
+        List<PostDTO> postDTOS = postService.getPostByStatus(postStatus);
+        List<ResponsePost> responsePost = new ArrayList<>();
+        postDTOS.forEach(postDTO -> {
+            responsePost.add(new ResponsePost(postDTO));
+        });
+        return ResponseEntity.ok(responsePost);
+    }
+
 
 }
