@@ -155,4 +155,13 @@ public class MemberServiceImpl implements MemberService {
         logService.saveLog("root",LogStatus.수정, updatedMember.getMemberName(), "Member");
         return ResponseEntity.ok("회원상태 활성화로 수정 완료");
     }
+
+    @Override
+    @Transactional
+    public List<MemberDTO> getMemberByStatus(MEMBER_STATUS memberStatus) {
+        List<Member> memberList = memberRepository.findAllByMemberStatus(memberStatus);
+        List<MemberDTO> memberDTOs = new ArrayList<>();
+        memberList.forEach(member -> memberDTOs.add(new MemberDTO(member)));
+        return memberDTOs;
+    }
 }
