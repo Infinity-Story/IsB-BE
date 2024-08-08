@@ -3,6 +3,7 @@ package com.infinity.isbbe.post.controller;
 import com.infinity.isbbe.post.aggregate.RequestPost;
 import com.infinity.isbbe.post.aggregate.ResponsePost;
 import com.infinity.isbbe.post.dto.PostDTO;
+import com.infinity.isbbe.post.etc.POST_STATUS;
 import com.infinity.isbbe.post.service.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -56,20 +57,39 @@ public class PostController {
     }
 
     @Operation(summary = "게시물 상태 수정", description = "게시물 상태를 블라인드로 수정합니다.")
-    @PutMapping("update/blind/{postCode}")
+    @PutMapping("/update/blind/{postCode}")
     public ResponseEntity<String> updatePostBlind(@PathVariable int postCode) {
         return postService.updatePostBlind(postCode);
     }
 
     @Operation(summary = "게시물 상태 수정", description = "게시물 상태를 삭제처리로 수정합니다.")
-    @PutMapping("update/delete/{postCode}")
+    @PutMapping("/update/delete/{postCode}")
     public ResponseEntity<String> updatePostDelete(@PathVariable int postCode) {
         return postService.updatePostDelete(postCode);
     }
 
     @Operation(summary = "게시물 상태 수정", description = "게시물 상태를 활성화로 수정합니다.")
-    @PutMapping("update/on/{postCode}")
+    @PutMapping("/update/on/{postCode}")
     public ResponseEntity<String> updatePostOn(@PathVariable int postCode) {
         return postService.updatePostOn(postCode);
     }
+
+    @Operation(summary = "회원의 게시물 조회", description = "특정 회원이 게시한 게시물을 조회합니다.")
+    @GetMapping("/member/{memberCode}")
+    public ResponseEntity<List<ResponsePost>> getPostMemberList(@PathVariable int memberCode) {
+        return ResponseEntity.ok(postService.getPostMemberList(memberCode));
+    }
+
+    @Operation(summary = "게시물 상태별 조회", description = "게시물 상태를 기준으로 게시물을 조회합니다.")
+    @GetMapping("/detail/postStatus/{postStatus}")
+    public ResponseEntity<List<ResponsePost>> getPostByStatus(@PathVariable("postStatus") POST_STATUS postStatus) {
+        List<PostDTO> postDTOS = postService.getPostByStatus(postStatus);
+        List<ResponsePost> responsePost = new ArrayList<>();
+        postDTOS.forEach(postDTO -> {
+            responsePost.add(new ResponsePost(postDTO));
+        });
+        return ResponseEntity.ok(responsePost);
+    }
+
+
 }

@@ -1,7 +1,9 @@
 package com.infinity.isbbe.post.service;
 
 import com.infinity.isbbe.post.aggregate.RequestPost;
+import com.infinity.isbbe.post.aggregate.ResponsePost;
 import com.infinity.isbbe.post.dto.PostDTO;
+import com.infinity.isbbe.post.etc.POST_STATUS;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -20,4 +22,8 @@ public interface PostService {
     ResponseEntity<String> updatePostDelete(int postCode);
 
     ResponseEntity<String> updatePostOn(int postCode);
+
+    List<ResponsePost> getPostMemberList(int memberCode);
+
+    List<PostDTO> getPostByStatus(POST_STATUS postStatus);
 }

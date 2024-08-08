@@ -1,7 +1,9 @@
 package com.infinity.isbbe.reply.service;
 
 import com.infinity.isbbe.reply.aggregate.RequestReply;
+import com.infinity.isbbe.reply.aggregate.ResponseReply;
 import com.infinity.isbbe.reply.dto.ReplyDTO;
+import com.infinity.isbbe.reply.etc.REPLY_STATUS;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -20,4 +22,8 @@ public interface ReplyService {
     ResponseEntity<String> updateReplyDelete(int replyCode);
 
     ResponseEntity<String> updateReplyOn(int replyCode);
+
+    List<ResponseReply> getReplyMemberList(int memberCode);
+
+    List<ReplyDTO> getReplyByStatus(REPLY_STATUS replyStatus);
 }

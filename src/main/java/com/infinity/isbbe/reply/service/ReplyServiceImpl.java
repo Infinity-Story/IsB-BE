@@ -8,6 +8,7 @@ import com.infinity.isbbe.post.aggregate.Post;
 import com.infinity.isbbe.post.repository.PostRepository;
 import com.infinity.isbbe.reply.aggregate.Reply;
 import com.infinity.isbbe.reply.aggregate.RequestReply;
+import com.infinity.isbbe.reply.aggregate.ResponseReply;
 import com.infinity.isbbe.reply.dto.ReplyDTO;
 import com.infinity.isbbe.reply.etc.REPLY_STATUS;
 import com.infinity.isbbe.reply.repository.ReplyRepository;
@@ -82,6 +83,7 @@ public class ReplyServiceImpl implements ReplyService {
         reply.setReplyReportCount(request.getReplyReportCount());
         reply.setReplyLikeCount(request.getReplyLikeCount());
         reply.setReplyDislikeCount(request.getReplyDislikeCount());
+        reply.setReplyStatus(REPLY_STATUS.활성화);
 
         Reply savedReply = replyRepository.save(reply);
 
@@ -173,5 +175,21 @@ public class ReplyServiceImpl implements ReplyService {
 
         logService.saveLog("root", LogStatus.수정, updatedReply.getReplyContent(), "Reply");
         return ResponseEntity.ok("댓글상태 활성화로 수정 완료");
+    }
+
+    @Override
+    public List<ResponseReply> getReplyMemberList(int memberCode) {
+        List<Reply> replies = replyRepository.findAllByMemberMemberCode(memberCode);
+        List<ResponseReply> responseReplies = new ArrayList<>();
+        replies.forEach(reply -> responseReplies.add(new ResponseReply(reply)));
+        return responseReplies;
+    }
+
+    @Override
+    public List<ReplyDTO> getReplyByStatus(REPLY_STATUS replyStatus) {
+        List<Reply> replyList = replyRepository.findAllByReplyStatus(replyStatus);
+        List<ReplyDTO> replyDTOS = new ArrayList<>();
+        replyList.forEach(reply -> replyDTOS.add(new ReplyDTO(reply)));
+        return replyDTOS;
     }
 }

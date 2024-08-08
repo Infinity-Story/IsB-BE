@@ -1,8 +1,10 @@
 package com.infinity.isbbe.member.controller;
 
+import com.infinity.isbbe.member.aggregate.Member;
 import com.infinity.isbbe.member.aggregate.RequestMember;
 import com.infinity.isbbe.member.aggregate.ResponseMember;
 import com.infinity.isbbe.member.dto.MemberDTO;
+import com.infinity.isbbe.member.etc.MEMBER_STATUS;
 import com.infinity.isbbe.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -77,5 +79,16 @@ public class MemberController {
     @PutMapping("update/on/{memberCode}")
     public ResponseEntity<String> updateMemberOn(@PathVariable int memberCode) {
         return memberService.updateMemberOn(memberCode);
+    }
+
+    @Operation(summary = "회원 상태별 조회", description = "회원 상태를 기준으로 회원을 조회합니다.")
+    @GetMapping("/detail/memberStatus/{memberStatus}")
+    public ResponseEntity<List<ResponseMember>> getMemberByStatus(@PathVariable("memberStatus") MEMBER_STATUS memberStatus) {
+        List<MemberDTO> memberDTOS = memberService.getMemberByStatus(memberStatus);
+        List<ResponseMember> responseMember = new ArrayList<>();
+        memberDTOS.forEach(memberDTO -> {
+            responseMember.add(new ResponseMember(memberDTO));
+        });
+        return ResponseEntity.ok(responseMember);
     }
 }
