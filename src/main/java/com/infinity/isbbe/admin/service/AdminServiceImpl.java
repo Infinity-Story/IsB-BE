@@ -30,4 +30,12 @@ public class AdminServiceImpl implements AdminService {
         adminList.forEach(admin -> adminDTOList.add(new AdminDTO(admin)));
         return adminDTOList;
     }
+
+    @Override
+    public List<AdminDTO> getAdminByCode(int adminCode) {
+        List<Admin> adminList = adminRepository.findByAdminCode(adminCode);
+        List<AdminDTO> adminDTOList = new ArrayList<>();
+        adminList.forEach(admin -> adminDTOList.add(new AdminDTO(admin)));
+        return adminDTOList;
+    }
 }

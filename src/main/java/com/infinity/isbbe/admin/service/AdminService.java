@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface AdminService {
     List<AdminDTO> getAllAdmin();
+
+    List<AdminDTO> getAdminByCode(int adminCode);
 }
