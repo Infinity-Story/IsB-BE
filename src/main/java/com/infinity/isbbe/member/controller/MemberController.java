@@ -1,6 +1,5 @@
 package com.infinity.isbbe.member.controller;
 
-import com.infinity.isbbe.member.aggregate.Member;
 import com.infinity.isbbe.member.aggregate.RequestMember;
 import com.infinity.isbbe.member.aggregate.ResponseMember;
 import com.infinity.isbbe.member.dto.MemberDTO;
