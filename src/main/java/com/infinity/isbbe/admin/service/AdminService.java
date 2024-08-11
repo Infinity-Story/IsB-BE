@@ -12,4 +12,6 @@ public interface AdminService {
     List<AdminDTO> getAdminByCode(int adminCode);
 
     ResponseEntity<String> createMember(ResponseAdmin request);
+
+    ResponseEntity<String> updateAdmin(int adminCode, ResponseAdmin request);
 }

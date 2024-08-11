@@ -45,4 +45,11 @@ public class AdminController {
     public ResponseEntity<String> createAdmin(@RequestBody ResponseAdmin request) {
         return adminService.createMember(request);
     }
+
+    @Operation(summary = "관리자 수정", description = "기존 관리자를 수정합니다.")
+    @PutMapping("/update/{adminCode}")
+    public ResponseEntity<String> updateAdmin(@PathVariable int adminCode, @RequestBody ResponseAdmin request) {
+        return adminService.updateAdmin(adminCode,request);
+    }
+
 }
