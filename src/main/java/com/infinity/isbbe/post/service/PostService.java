@@ -3,6 +3,7 @@ package com.infinity.isbbe.post.service;
 import com.infinity.isbbe.post.aggregate.RequestPost;
 import com.infinity.isbbe.post.aggregate.ResponsePost;
 import com.infinity.isbbe.post.dto.PostDTO;
+import com.infinity.isbbe.post.etc.POST_CATEGORY;
 import com.infinity.isbbe.post.etc.POST_STATUS;
 import org.springframework.http.ResponseEntity;
 
@@ -26,4 +27,6 @@ public interface PostService {
     List<ResponsePost> getPostMemberList(int memberCode);
 
     List<PostDTO> getPostByStatus(POST_STATUS postStatus);
+
+    List<PostDTO> getPostByCategory(POST_CATEGORY postCategory);
 }

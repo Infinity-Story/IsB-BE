@@ -1,6 +1,7 @@
 package com.infinity.isbbe.post.aggregate;
 
 import com.infinity.isbbe.member.aggregate.Member;
+import com.infinity.isbbe.post.etc.POST_CATEGORY;
 import com.infinity.isbbe.post.etc.POST_STATUS;
 import jakarta.persistence.*;
 import lombok.*;
@@ -53,6 +54,10 @@ public class Post {
     @Column(name = "post_status")
     @Enumerated(EnumType.STRING)
     private POST_STATUS postStatus;
+
+    @Column(name = "post_category")
+    @Enumerated(EnumType.STRING)
+    private POST_CATEGORY postCategory;
 
     @ManyToOne
     @JoinColumn(name = "member_code")
