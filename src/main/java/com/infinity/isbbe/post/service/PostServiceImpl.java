@@ -8,6 +8,7 @@ import com.infinity.isbbe.post.aggregate.Post;
 import com.infinity.isbbe.post.aggregate.RequestPost;
 import com.infinity.isbbe.post.aggregate.ResponsePost;
 import com.infinity.isbbe.post.dto.PostDTO;
+import com.infinity.isbbe.post.etc.POST_CATEGORY;
 import com.infinity.isbbe.post.etc.POST_STATUS;
 import com.infinity.isbbe.post.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -76,6 +77,7 @@ public class PostServiceImpl implements PostService{
         post.setPostLikeCount(request.getPostLikeCount());
         post.setPostDislikeCount(request.getPostDislikeCount());
         post.setPostReplyCount(request.getPostReplyCount());
+        post.setPostCategory(request.getPostCategory());
         post.setPostStatus(POST_STATUS.활성화);
 
         Post savedPost = postRepository.save(post);
@@ -111,6 +113,7 @@ public class PostServiceImpl implements PostService{
         post.setPostLikeCount(request.getPostLikeCount());
         post.setPostDislikeCount(request.getPostDislikeCount());
         post.setPostReplyCount(request.getPostReplyCount());
+        post.setPostCategory(request.getPostCategory());
 
         Post updatedPost = postRepository.save(post);
 
@@ -182,6 +185,14 @@ public class PostServiceImpl implements PostService{
         List<PostDTO> postDTOs = new ArrayList<>();
         postList.forEach(post -> postDTOs.add(new PostDTO(post)));
         return postDTOs;
+    }
+
+    @Override
+    public List<PostDTO> getPostByCategory(POST_CATEGORY postCategory) {
+        List<Post> postList = postRepository.findAllByPostCategory(postCategory);
+        List<PostDTO> postDTOS = new ArrayList<>();
+        postList.forEach(post -> postDTOS.add(new PostDTO(post)));
+        return postDTOS;
     }
 
 }

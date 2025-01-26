@@ -1,12 +1,18 @@
 package com.infinity.isbbe.admin.service;
 
 import com.infinity.isbbe.admin.aggregate.Admin;
+import com.infinity.isbbe.admin.aggregate.ResponseAdmin;
 import com.infinity.isbbe.admin.dto.AdminDTO;
 import com.infinity.isbbe.admin.repository.AdminRepository;
+import com.infinity.isbbe.log.etc.LogStatus;
 import com.infinity.isbbe.log.service.LogService;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,5 +43,50 @@ public class AdminServiceImpl implements AdminService {
         List<AdminDTO> adminDTOList = new ArrayList<>();
         adminList.forEach(admin -> adminDTOList.add(new AdminDTO(admin)));
         return adminDTOList;
+    }
+
+    @Override
+    public ResponseEntity<String> createMember(ResponseAdmin request) {
+        Admin admin = new Admin();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = LocalDateTime.now().format(formatter);
+
+        admin.setAdminCode(request.getAdminCode());
+        admin.setAdminId(request.getAdminId());
+        admin.setAdminPw(request.getAdminPw());
+        admin.setAdminName(request.getAdminName());
+        admin.setAdminEnrollDate(formattedDateTime);
+        admin.setAdminEmail(request.getAdminEmail());
+        admin.setAdminPhone(request.getAdminPhone());
+        admin.setAdminRole(request.getAdminRole());
+
+        Admin savedAdmin = adminRepository.save(admin);
+
+        logService.saveLog("root", LogStatus.등록, savedAdmin.getAdminName(), "Admin");
+
+        return ResponseEntity.ok("신규 관리자 등록 완료");
+    }
+
+    @Override
+    public ResponseEntity<String> updateAdmin(int adminCode, ResponseAdmin request) {
+        Admin admin = adminRepository.findById(adminCode)
+                .orElseThrow(()-> new EntityNotFoundException("해당 관리자가 존재하지 않습니다."));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = LocalDateTime.now().format(formatter);
+
+        admin.setAdminId(request.getAdminId());
+        admin.setAdminPw(request.getAdminPw());
+        admin.setAdminName(request.getAdminName());
+        admin.setAdminUpdateDate(formattedDateTime);
+        admin.setAdminEmail(request.getAdminEmail());
+        admin.setAdminPhone(request.getAdminPhone());
+        admin.setAdminRole(request.getAdminRole());
+
+        Admin updatedAdmin = adminRepository.save(admin);
+
+        logService.saveLog("root", LogStatus.수정, updatedAdmin.getAdminName(), "Admin");
+
+        return ResponseEntity.ok("관리자 수정 완료");
     }
 }

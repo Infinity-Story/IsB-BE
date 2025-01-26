@@ -1,5 +1,6 @@
 package com.infinity.isbbe.post.aggregate;
 
+import com.infinity.isbbe.post.etc.POST_CATEGORY;
 import lombok.*;
 
 @AllArgsConstructor
@@ -19,6 +20,7 @@ public class RequestPost {
     private int postLikeCount;
     private int postDislikeCount;
     private int postReplyCount;
+    private POST_CATEGORY postCategory;
 
     private int memberCode;
 }

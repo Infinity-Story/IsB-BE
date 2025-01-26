@@ -3,6 +3,7 @@ package com.infinity.isbbe.post.controller;
 import com.infinity.isbbe.post.aggregate.RequestPost;
 import com.infinity.isbbe.post.aggregate.ResponsePost;
 import com.infinity.isbbe.post.dto.PostDTO;
+import com.infinity.isbbe.post.etc.POST_CATEGORY;
 import com.infinity.isbbe.post.etc.POST_STATUS;
 import com.infinity.isbbe.post.service.PostService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -84,6 +85,17 @@ public class PostController {
     @GetMapping("/detail/postStatus/{postStatus}")
     public ResponseEntity<List<ResponsePost>> getPostByStatus(@PathVariable("postStatus") POST_STATUS postStatus) {
         List<PostDTO> postDTOS = postService.getPostByStatus(postStatus);
+        List<ResponsePost> responsePost = new ArrayList<>();
+        postDTOS.forEach(postDTO -> {
+            responsePost.add(new ResponsePost(postDTO));
+        });
+        return ResponseEntity.ok(responsePost);
+    }
+
+    @Operation(summary = "게시물 카테고리별 조회", description = "게시물 카테고리를 기준으로 게시물을 조회합니다.")
+    @GetMapping("/detail/postCategory/{postCategory}")
+    public ResponseEntity<List<ResponsePost>> getPostByCategory(@PathVariable("postCategory") POST_CATEGORY postCategory) {
+        List<PostDTO> postDTOS = postService.getPostByCategory(postCategory);
         List<ResponsePost> responsePost = new ArrayList<>();
         postDTOS.forEach(postDTO -> {
             responsePost.add(new ResponsePost(postDTO));

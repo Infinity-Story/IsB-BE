@@ -80,6 +80,12 @@ public class MemberController {
         return memberService.updateMemberOn(memberCode);
     }
 
+    @Operation(summary = "회원 상태 수정", description = "회원 상태를 탈퇴처리로 수정합니다.")
+    @PutMapping("update/out/{memberCode}")
+    public ResponseEntity<String> updateMemberOut(@PathVariable int memberCode) {
+        return memberService.updateMemberOut(memberCode);
+    }
+
     @Operation(summary = "회원 상태별 조회", description = "회원 상태를 기준으로 회원을 조회합니다.")
     @GetMapping("/detail/memberStatus/{memberStatus}")
     public ResponseEntity<List<ResponseMember>> getMemberByStatus(@PathVariable("memberStatus") MEMBER_STATUS memberStatus) {

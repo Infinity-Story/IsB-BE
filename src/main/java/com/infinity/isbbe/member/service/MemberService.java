@@ -25,4 +25,6 @@ public interface MemberService {
     ResponseEntity<String> updateMemberOn(int memberCode);
 
     List<MemberDTO> getMemberByStatus(MEMBER_STATUS memberStatus);
+
+    ResponseEntity<String> updateMemberOut(int memberCode);
 }

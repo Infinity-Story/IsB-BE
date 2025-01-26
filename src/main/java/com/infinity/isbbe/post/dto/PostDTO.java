@@ -1,6 +1,7 @@
 package com.infinity.isbbe.post.dto;
 
 import com.infinity.isbbe.post.aggregate.Post;
+import com.infinity.isbbe.post.etc.POST_CATEGORY;
 import com.infinity.isbbe.post.etc.POST_STATUS;
 import lombok.*;
 
@@ -23,6 +24,7 @@ public class PostDTO {
     private int postDislikeCount;
     private int postReplyCount;
     private POST_STATUS postStatus;
+    private POST_CATEGORY postCategory;
 
 
     private int memberCode;
@@ -42,6 +44,7 @@ public class PostDTO {
         this.postDislikeCount = post.getPostDislikeCount();
         this.postReplyCount = post.getPostReplyCount();
         this.postStatus = post.getPostStatus();
+        this.postCategory = post.getPostCategory();
 
         this.memberCode =post.getMember().getMemberCode();
         this.memberName =post.getMember().getMemberName();
