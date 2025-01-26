@@ -37,7 +37,7 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	// MariaDB Driver
-	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+	implementation 'org.mariadb.jdbc:mariadb-java-client:3.1.2'
 
 	// JUnit
 	testImplementation("org.junit.vintage:junit-vintage-engine") {
