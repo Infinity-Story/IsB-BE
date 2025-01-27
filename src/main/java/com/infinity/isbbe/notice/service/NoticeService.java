@@ -12,4 +12,6 @@ public interface NoticeService {
     List<NoticeDTO> getNoticeByCode(int noticeCode);
 
     ResponseEntity<String> createNotice(RequestNotice request);
+
+    ResponseEntity<String> updateNotice(int noticeCode, RequestNotice request);
 }

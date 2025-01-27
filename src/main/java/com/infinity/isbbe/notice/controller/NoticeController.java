@@ -49,6 +49,9 @@ public class NoticeController {
         return noticeService.createNotice(request);
     }
 
-//    @Operation(summary = "공지사항 수정", description = "기존 공지사항을 수정합니다.")
-//    @PutMapping("/up")
+    @Operation(summary = "공지사항 수정", description = "기존 공지사항을 수정합니다.")
+    @PutMapping("/update/{noticeCode}")
+    public ResponseEntity<String> updateNotice(@PathVariable int noticeCode, @RequestBody RequestNotice request) {
+        return noticeService.updateNotice(noticeCode, request);
+    }
 }

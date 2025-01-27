@@ -8,8 +8,10 @@ import com.infinity.isbbe.notice.aggregate.Notice;
 import com.infinity.isbbe.notice.aggregate.RequestNotice;
 import com.infinity.isbbe.notice.dto.NoticeDTO;
 import com.infinity.isbbe.notice.repository.NoticeRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -48,6 +50,7 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<String> createNotice(RequestNotice request) {
         Notice notice = new Notice();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -72,5 +75,33 @@ public class NoticeServiceImpl implements NoticeService {
         logService.saveLog("root", LogStatus.등록, savedNotice.getNoticeTitle(), "Notice");
 
         return ResponseEntity.ok("공지사항 등록 완료!");
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<String> updateNotice(int noticeCode, RequestNotice request) {
+        Notice notice = noticeRepository.findById(noticeCode)
+                .orElseThrow(() -> new EntityNotFoundException("해당 공지사항이 존재하지 않습니다."));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = LocalDateTime.now().format(formatter);
+
+        List<Admin> adminList = adminRepository.findByAdminCode(request.getAdminCode());
+
+        if (adminList == null || adminList.isEmpty()) {
+            return ResponseEntity.badRequest().body("해당 관리자가 존재하지 않습니다.");
+        }
+        Admin admin = adminList.get(0);
+        notice.setAdmin(admin);
+
+        notice.setNoticeTitle(request.getNoticeTitle());
+        notice.setNoticeContent(request.getNoticeContent());
+        notice.setNoticeUpdateDate(formattedDateTime);
+
+        Notice updatedNotice = noticeRepository.save(notice);
+
+        logService.saveLog("root", LogStatus.수정, updatedNotice.getNoticeTitle(), "Notice");
+
+        return  ResponseEntity.ok("공지사항 수정 완료!");
     }
 }
