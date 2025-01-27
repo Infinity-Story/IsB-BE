@@ -33,4 +33,5 @@ public class Notice {
     @ManyToOne
     @JoinColumn(name = "admin_code")
     private Admin admin;
+
 }

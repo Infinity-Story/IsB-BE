@@ -48,4 +48,7 @@ public class NoticeController {
     public ResponseEntity<String> createNotice(@RequestBody RequestNotice request) {
         return noticeService.createNotice(request);
     }
+
+//    @Operation(summary = "공지사항 수정", description = "기존 공지사항을 수정합니다.")
+//    @PutMapping("/up")
 }

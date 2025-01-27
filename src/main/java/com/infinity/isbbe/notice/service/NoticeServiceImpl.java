@@ -62,6 +62,7 @@ public class NoticeServiceImpl implements NoticeService {
         Admin admin = adminList.get(0);
         notice.setAdmin(admin);
 
+
         notice.setNoticeTitle(request.getNoticeTitle());
         notice.setNoticeContent(request.getNoticeContent());
         notice.setNoticeEnrollDate(formattedDateTime);
