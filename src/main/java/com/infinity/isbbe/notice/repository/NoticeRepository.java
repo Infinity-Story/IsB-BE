@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface NoticeRepository extends JpaRepository<Notice, Integer> {
 
+    List<Notice> findByNoticeCode(int noticeCode);
 }
