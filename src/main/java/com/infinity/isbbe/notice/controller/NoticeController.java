@@ -31,7 +31,7 @@ public class NoticeController {
         List<NoticeDTO> noticeList = noticeService.getAllNotice();
         return ResponseEntity.ok(noticeList);
     }
-
+// move test
     @Operation(summary = "공지사항 코드로 공지사항 조회", description = "특정 공지사항을 조회합니다.")
     @GetMapping("/detail/{noticeCode}")
     public ResponseEntity<List<ResponseNotice>> getNoticeByNoticeCode(@PathVariable int noticeCode) {
