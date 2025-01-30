@@ -44,7 +44,7 @@ public class NoticeController {
     }
 
     @Operation(summary = "공지사항 등록", description = "신규 공지사항을 등록합니다.")
-    @PostMapping("/create")
+    @PostMapping("/regist")
     public ResponseEntity<String> createNotice(@RequestBody RequestNotice request) {
         return noticeService.createNotice(request);
     }
