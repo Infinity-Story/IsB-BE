@@ -2,6 +2,10 @@ package com.infinity.isbbe.admin.aggregate;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.Collection;
+import java.util.Collections;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -41,4 +45,8 @@ public class Admin {
 
     @Column(name = "admin_role")
     private int adminRole;
+
+    public Collection<SimpleGrantedAuthority> getRoles() {
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
+    }
 }
