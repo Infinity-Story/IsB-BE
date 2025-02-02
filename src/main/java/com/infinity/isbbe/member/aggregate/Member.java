@@ -3,6 +3,10 @@ package com.infinity.isbbe.member.aggregate;
 import com.infinity.isbbe.member.etc.MEMBER_STATUS;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.Collection;
+import java.util.Collections;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -43,4 +47,8 @@ public class Member {
     @Column(name = "member_status")
     @Enumerated(EnumType.STRING)
     private MEMBER_STATUS memberStatus;
+
+    public Collection<SimpleGrantedAuthority> getRoles() {
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+    }
 }

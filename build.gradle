@@ -23,7 +23,19 @@ dependencies {
 
 	// Web
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// Spring Security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	testImplementation 'org.springframework.security:spring-security-test'
+
+	// ✅ JJWT 의존성 최적화
+	implementation "io.jsonwebtoken:jjwt-api:0.11.5"
+	implementation "io.jsonwebtoken:jjwt-impl:0.11.5"
+	implementation "io.jsonwebtoken:jjwt-jackson:0.11.5"
+	implementation("javax.xml.bind:jaxb-api:2.3.1") // JWT 라이브러리와 함께 필요할 수도 있음
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	// ModelMapper
