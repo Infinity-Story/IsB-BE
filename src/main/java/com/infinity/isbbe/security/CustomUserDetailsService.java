@@ -33,9 +33,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         Member member = memberRepository.findByMemberId(username).orElse(null);
         if (member != null) {
+            // 비밀번호가 맞다면 인코딩된 비밀번호를 반환
             return new User(member.getMemberId(), member.getMemberPw(), true, true, true, true, member.getRoles());
         }
 
         throw new UsernameNotFoundException("User not found: " + username);
     }
 }
+

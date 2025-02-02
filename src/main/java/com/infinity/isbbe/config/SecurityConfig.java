@@ -12,7 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
-@Configuration(proxyBeanMethods = true)  // Spring Security 6.1 이상에서는 이 방식 사용
+@Configuration(proxyBeanMethods = true)
 public class SecurityConfig {
 
     private final JwtTokenFilter jwtTokenFilter;
@@ -25,12 +25,10 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // Spring Security 6.1 이후 csrf 보호 기능은 기본적으로 활성화됨
-        // csrf 보호 기능을 비활성화하려면 다음과 같이 설정합니다.
         http
                 .csrf(csrf -> csrf.disable())  // csrf 비활성화
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/api/auth/login", "/user/login").permitAll()  // 로그인 API 허용
+                        .requestMatchers("/api/auth/login", "/api/auth/user-login").permitAll()  // 로그인 API 허용
                         .anyRequest().authenticated()  // 나머지 요청은 인증 필요
                 )
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);  // JWT 필터 추가
@@ -50,3 +48,4 @@ public class SecurityConfig {
         return authenticationManagerBuilder.build();
     }
 }
+
