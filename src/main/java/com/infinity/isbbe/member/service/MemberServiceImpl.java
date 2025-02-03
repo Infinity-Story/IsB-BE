@@ -9,6 +9,7 @@ import com.infinity.isbbe.member.etc.MEMBER_STATUS;
 import com.infinity.isbbe.member.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,10 +23,12 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final LogService logService;
+    private final PasswordEncoder passwordEncoder;
 
-    public MemberServiceImpl(MemberRepository memberRepository, LogService logService) {
+    public MemberServiceImpl(MemberRepository memberRepository, LogService logService, PasswordEncoder passwordEncoder) {
         this.memberRepository = memberRepository;
         this.logService = logService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -54,9 +57,12 @@ public class MemberServiceImpl implements MemberService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDateTime = LocalDateTime.now().format(formatter);
 
+        // Password Encoding
+        String encodedPassword = passwordEncoder.encode(request.getMemberPw());
+
         member.setMemberName(request.getMemberName());
         member.setMemberEmail(request.getMemberEmail());
-        member.setMemberPw(request.getMemberPw());
+        member.setMemberPw(encodedPassword);
         member.setMemberId(request.getMemberId());
         member.setMemberPhone(request.getMemberPhone());
         member.setMemberEnrollDate(formattedDateTime);

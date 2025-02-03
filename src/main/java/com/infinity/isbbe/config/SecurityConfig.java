@@ -26,10 +26,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())  // csrf 비활성화
+                .csrf(csrf -> csrf.disable())  // CSRF 비활성화
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/api/auth/login", "/api/auth/user-login").permitAll()  // 로그인 API 허용
-                        .anyRequest().authenticated()  // 나머지 요청은 인증 필요
+                        .anyRequest().permitAll()  // 모든 요청을 허용
                 )
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);  // JWT 필터 추가
 
@@ -48,4 +47,5 @@ public class SecurityConfig {
         return authenticationManagerBuilder.build();
     }
 }
+
 
