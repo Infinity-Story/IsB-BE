@@ -1,5 +1,6 @@
 package com.infinity.isbbe.member.service;
 
+import com.infinity.isbbe.admin.repository.AdminRepository;
 import com.infinity.isbbe.log.etc.LogStatus;
 import com.infinity.isbbe.log.service.LogService;
 import com.infinity.isbbe.member.aggregate.Member;
@@ -22,10 +23,12 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final LogService logService;
+    private final AdminRepository adminRepository;
 
-    public MemberServiceImpl(MemberRepository memberRepository, LogService logService) {
+    public MemberServiceImpl(MemberRepository memberRepository, LogService logService, AdminRepository adminRepository) {
         this.memberRepository = memberRepository;
         this.logService = logService;
+        this.adminRepository = adminRepository;
     }
 
     @Override
@@ -50,6 +53,16 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public ResponseEntity<String> createMember(RequestMember request) {
+        // adminId 중복 체크
+        if (adminRepository.existsByAdminId(request.getMemberId())) {
+            throw new IllegalArgumentException("Id already exist");
+        }
+
+        // memberId 중복 체크
+        if (memberRepository.existsByMemberId(request.getMemberId())) {
+            throw new IllegalArgumentException("Id already exist");
+        }
+
         Member member = new Member();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDateTime = LocalDateTime.now().format(formatter);

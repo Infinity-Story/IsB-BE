@@ -1,6 +1,8 @@
 package com.infinity.isbbe.commonUser;
 
+import com.infinity.isbbe.admin.service.AdminService;
 import com.infinity.isbbe.config.JwtTokenProvider;
+import com.infinity.isbbe.member.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,9 +17,13 @@ import java.util.Map;
 public class UserController {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final AdminService adminService;
+    private final MemberService memberService;
 
-    public UserController(JwtTokenProvider jwtTokenProvider) {
+    public UserController(JwtTokenProvider jwtTokenProvider, AdminService adminService, MemberService memberService) {
         this.jwtTokenProvider = jwtTokenProvider;
+        this.adminService = adminService;
+        this.memberService = memberService;
     }
 
     // 현재 로그인한 사용자 정보 반환 (adminName 또는 memberName)

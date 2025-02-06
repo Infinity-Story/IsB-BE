@@ -6,6 +6,7 @@ import com.infinity.isbbe.admin.dto.AdminDTO;
 import com.infinity.isbbe.admin.repository.AdminRepository;
 import com.infinity.isbbe.log.etc.LogStatus;
 import com.infinity.isbbe.log.service.LogService;
+import com.infinity.isbbe.member.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,10 +22,12 @@ public class AdminServiceImpl implements AdminService {
 
     private final AdminRepository adminRepository;
     private final LogService logService;
+    private final MemberRepository memberRepository;
 
-    public AdminServiceImpl(AdminRepository adminRepository, LogService logService) {
+    public AdminServiceImpl(AdminRepository adminRepository, LogService logService, MemberRepository memberRepository) {
         this.adminRepository = adminRepository;
         this.logService = logService;
+        this.memberRepository = memberRepository;
     }
 
     @Override
@@ -46,7 +49,18 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public ResponseEntity<String> createMember(ResponseAdmin request) {
+    public ResponseEntity<String> createAdmin(ResponseAdmin request) {
+        // adminId 중복 체크
+        if (adminRepository.existsByAdminId(request.getAdminId())) {
+            throw new IllegalArgumentException("Id already exist");
+        }
+
+        // memberId 중복 체크
+        if (memberRepository.existsByMemberId(request.getAdminId())) {
+            throw new IllegalArgumentException("Id already exist");
+        }
+
+        // 새로운 관리자 등록 로직
         Admin admin = new Admin();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDateTime = LocalDateTime.now().format(formatter);

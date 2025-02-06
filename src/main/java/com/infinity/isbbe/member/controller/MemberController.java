@@ -8,6 +8,7 @@ import com.infinity.isbbe.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,7 +48,11 @@ public class MemberController {
     @Operation(summary = "회원 등록", description = "신규 회원을 등록합니다.")
     @PostMapping("/create")
     public ResponseEntity<String> createMember(@RequestBody RequestMember request) {
-        return memberService.createMember(request);
+        try {
+            return memberService.createMember(request);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     @Operation(summary = "회원 수정", description = "기존 회원의 정보를 수정합니다.")
