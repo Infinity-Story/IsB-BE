@@ -45,6 +45,16 @@ public class MemberController {
         return ResponseEntity.ok(responseMember);
     }
 
+    // Id 중복 체크
+    @GetMapping("/check-id")
+    public ResponseEntity<String> checkId(@RequestParam String memberId) {
+        boolean isExist = memberService.checkIdExist(memberId);
+        if(isExist) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미 사용 중인 아이디입니다.");
+        }
+        return ResponseEntity.ok("사용 가능한 아이디입니다.");
+    }
+
     @Operation(summary = "회원 등록", description = "신규 회원을 등록합니다.")
     @PostMapping("/create")
     public ResponseEntity<String> createMember(@RequestBody RequestMember request) {

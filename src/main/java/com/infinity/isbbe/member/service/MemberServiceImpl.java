@@ -8,6 +8,7 @@ import com.infinity.isbbe.member.aggregate.RequestMember;
 import com.infinity.isbbe.member.dto.MemberDTO;
 import com.infinity.isbbe.member.etc.MEMBER_STATUS;
 import com.infinity.isbbe.member.repository.MemberRepository;
+import com.infinity.isbbe.security.PasswordEncoderUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -67,9 +68,11 @@ public class MemberServiceImpl implements MemberService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDateTime = LocalDateTime.now().format(formatter);
 
+        String encodedPassword = PasswordEncoderUtil.encodePassword(request.getMemberPw());
+
         member.setMemberName(request.getMemberName());
         member.setMemberEmail(request.getMemberEmail());
-        member.setMemberPw(request.getMemberPw());
+        member.setMemberPw(encodedPassword);
         member.setMemberId(request.getMemberId());
         member.setMemberPhone(request.getMemberPhone());
         member.setMemberEnrollDate(formattedDateTime);
@@ -182,6 +185,11 @@ public class MemberServiceImpl implements MemberService {
 
         logService.saveLog("root",LogStatus.수정, updatedMember.getMemberName(), "Member");
         return ResponseEntity.ok("회원상태 탈퇴처리로 수정 완료");
+    }
+
+    @Override
+    public boolean checkIdExist(String memberId) {
+        return memberRepository.existsByMemberId(memberId);
     }
 
     @Override

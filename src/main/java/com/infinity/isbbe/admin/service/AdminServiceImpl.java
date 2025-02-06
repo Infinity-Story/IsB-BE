@@ -7,6 +7,7 @@ import com.infinity.isbbe.admin.repository.AdminRepository;
 import com.infinity.isbbe.log.etc.LogStatus;
 import com.infinity.isbbe.log.service.LogService;
 import com.infinity.isbbe.member.repository.MemberRepository;
+import com.infinity.isbbe.security.PasswordEncoderUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -65,9 +66,12 @@ public class AdminServiceImpl implements AdminService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDateTime = LocalDateTime.now().format(formatter);
 
+        // 비밀번호 인코딩
+        String encodedPassword = PasswordEncoderUtil.encodePassword(request.getAdminPw());
+
         admin.setAdminCode(request.getAdminCode());
         admin.setAdminId(request.getAdminId());
-        admin.setAdminPw(request.getAdminPw());
+        admin.setAdminPw(encodedPassword); // 인코딩된 비밀번호 저장
         admin.setAdminName(request.getAdminName());
         admin.setAdminEnrollDate(formattedDateTime);
         admin.setAdminEmail(request.getAdminEmail());
