@@ -52,12 +52,21 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public MemberDTO getMemberByMemberId(String memberId) {
+        Member member = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new RuntimeException("회원 정보를 찾을 수 없습니다."));
+        return new MemberDTO(member);
+    }
+
+    @Override
     @Transactional
     public MemberDTO getMemberById(String memberId) {
         Member member = memberRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("Member not found"));
         return new MemberDTO(member);
     }
+
+
 
     @Override
     @Transactional

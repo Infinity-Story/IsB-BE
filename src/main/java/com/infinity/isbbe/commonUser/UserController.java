@@ -2,13 +2,12 @@ package com.infinity.isbbe.commonUser;
 
 import com.infinity.isbbe.admin.service.AdminService;
 import com.infinity.isbbe.config.JwtTokenProvider;
+import com.infinity.isbbe.member.dto.MemberDTO;
 import com.infinity.isbbe.member.service.MemberService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -53,5 +52,12 @@ public class UserController {
 
         // 역할과 사용자 정보를 반환
         return ResponseEntity.ok(Map.of("role", role, "username", username));
+    }
+
+    @Operation(summary = "회원 ID로 유저 정보 조회", description = "로그인한 회원의 ID로 유저 정보를 조회합니다.")
+    @GetMapping("/member/{memberId}")
+    public ResponseEntity<MemberDTO> getMemberByMemberId(@PathVariable String memberId) {
+        MemberDTO memberDTO = memberService.getMemberByMemberId(memberId);
+        return ResponseEntity.ok(memberDTO);
     }
 }
