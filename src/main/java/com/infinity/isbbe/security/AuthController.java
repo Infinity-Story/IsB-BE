@@ -4,6 +4,7 @@ import com.infinity.isbbe.config.JwtTokenProvider;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,11 +28,21 @@ public class AuthController {
 
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
 
-        // JWT 토큰 생성
-        String jwt = jwtTokenProvider.createToken(authentication);
+        // Authentication 객체에서 UserDetails 추출
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-        // 응답 반환
-        return new LoginResponse(jwt);
+        // 사용자 정보 (username, role) 추출
+        String username = userDetails.getUsername();
+        String role = userDetails.getAuthorities().stream()
+                .findFirst()
+                .map(authority -> authority.getAuthority()) // 예시: ROLE_USER 또는 ROLE_ADMIN
+                .orElse("ROLE_USER"); // 기본값: ROLE_USER
+
+        // JWT 토큰 생성
+        String jwt = jwtTokenProvider.createToken(userDetails, username, role);
+
+        // 응답 반환 (JWT와 role 포함)
+        return new LoginResponse(jwt, role);
     }
 
     @CrossOrigin(origins = "http://localhost:5173")  // CORS 허용
@@ -43,10 +54,21 @@ public class AuthController {
 
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
 
-        // JWT 토큰 생성
-        String jwt = jwtTokenProvider.createToken(authentication);
+        // Authentication 객체에서 UserDetails 추출
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-        // 응답 반환
-        return new LoginResponse(jwt);
+        // 사용자 정보 (username, role) 추출
+        String username = userDetails.getUsername();
+        String role = userDetails.getAuthorities().stream()
+                .findFirst()
+                .map(authority -> authority.getAuthority()) // 예시: ROLE_USER 또는 ROLE_ADMIN
+                .orElse("ROLE_USER"); // 기본값: ROLE_USER
+
+        // JWT 토큰 생성
+        String jwt = jwtTokenProvider.createToken(userDetails, username, role);
+
+        // 응답 반환 (JWT와 role 포함)
+        return new LoginResponse(jwt, role);
     }
 }
+
