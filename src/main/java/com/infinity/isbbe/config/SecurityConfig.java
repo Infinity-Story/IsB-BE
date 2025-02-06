@@ -32,6 +32,7 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").hasRole("ADMIN")  // /admin/** 경로는 ADMIN 권한이 있어야 접근 가능
                         .requestMatchers("/member/**").permitAll()  // /member/create 경로는 인증 없이 접근 가능
                         .requestMatchers("/member/**").hasRole("MEMBER")  // 다른 /member/** 경로는 MEMBER 권한이 있어야 접근 가능
+                        .requestMatchers("/user/**").permitAll()
                         .anyRequest().authenticated()  // 나머지 경로는 인증 필요
                 )
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);  // JWT 필터를 UsernamePasswordAuthenticationFilter 전에 추가
