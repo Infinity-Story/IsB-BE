@@ -8,6 +8,7 @@ import com.infinity.isbbe.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,10 +45,31 @@ public class MemberController {
         return ResponseEntity.ok(responseMember);
     }
 
+    @Operation(summary = "회원 ID로 회원 조회", description = "특정 회원을 조회합니다.")
+    @GetMapping("/detail/id/{memberId}")
+    public ResponseEntity<ResponseMember> getMemberByMemberId(@PathVariable String memberId) {
+        MemberDTO memberDTO = memberService.getMemberById(memberId);
+        return ResponseEntity.ok(new ResponseMember(memberDTO));
+    }
+
+    // Id 중복 체크
+    @GetMapping("/check-id")
+    public ResponseEntity<String> checkId(@RequestParam String memberId) {
+        boolean isExist = memberService.checkIdExist(memberId);
+        if(isExist) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미 사용 중인 아이디입니다.");
+        }
+        return ResponseEntity.ok("사용 가능한 아이디입니다.");
+    }
+
     @Operation(summary = "회원 등록", description = "신규 회원을 등록합니다.")
     @PostMapping("/create")
     public ResponseEntity<String> createMember(@RequestBody RequestMember request) {
-        return memberService.createMember(request);
+        try {
+            return memberService.createMember(request);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     @Operation(summary = "회원 수정", description = "기존 회원의 정보를 수정합니다.")

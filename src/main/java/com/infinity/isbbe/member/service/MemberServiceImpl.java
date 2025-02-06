@@ -1,5 +1,6 @@
 package com.infinity.isbbe.member.service;
 
+import com.infinity.isbbe.admin.repository.AdminRepository;
 import com.infinity.isbbe.log.etc.LogStatus;
 import com.infinity.isbbe.log.service.LogService;
 import com.infinity.isbbe.member.aggregate.Member;
@@ -7,6 +8,7 @@ import com.infinity.isbbe.member.aggregate.RequestMember;
 import com.infinity.isbbe.member.dto.MemberDTO;
 import com.infinity.isbbe.member.etc.MEMBER_STATUS;
 import com.infinity.isbbe.member.repository.MemberRepository;
+import com.infinity.isbbe.security.PasswordEncoderUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,10 +24,12 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final LogService logService;
+    private final AdminRepository adminRepository;
 
-    public MemberServiceImpl(MemberRepository memberRepository, LogService logService) {
+    public MemberServiceImpl(MemberRepository memberRepository, LogService logService, AdminRepository adminRepository) {
         this.memberRepository = memberRepository;
         this.logService = logService;
+        this.adminRepository = adminRepository;
     }
 
     @Override
@@ -48,15 +52,44 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public MemberDTO getMemberByMemberId(String memberId) {
+        Member member = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new RuntimeException("회원 정보를 찾을 수 없습니다."));
+        return new MemberDTO(member);
+    }
+
+    @Override
+    @Transactional
+    public MemberDTO getMemberById(String memberId) {
+        Member member = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("Member not found"));
+        return new MemberDTO(member);
+    }
+
+
+
+    @Override
     @Transactional
     public ResponseEntity<String> createMember(RequestMember request) {
+        // adminId 중복 체크
+        if (adminRepository.existsByAdminId(request.getMemberId())) {
+            throw new IllegalArgumentException("Id already exist");
+        }
+
+        // memberId 중복 체크
+        if (memberRepository.existsByMemberId(request.getMemberId())) {
+            throw new IllegalArgumentException("Id already exist");
+        }
+
         Member member = new Member();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDateTime = LocalDateTime.now().format(formatter);
 
+        String encodedPassword = PasswordEncoderUtil.encodePassword(request.getMemberPw());
+
         member.setMemberName(request.getMemberName());
         member.setMemberEmail(request.getMemberEmail());
-        member.setMemberPw(request.getMemberPw());
+        member.setMemberPw(encodedPassword);
         member.setMemberId(request.getMemberId());
         member.setMemberPhone(request.getMemberPhone());
         member.setMemberEnrollDate(formattedDateTime);
@@ -169,6 +202,11 @@ public class MemberServiceImpl implements MemberService {
 
         logService.saveLog("root",LogStatus.수정, updatedMember.getMemberName(), "Member");
         return ResponseEntity.ok("회원상태 탈퇴처리로 수정 완료");
+    }
+
+    @Override
+    public boolean checkIdExist(String memberId) {
+        return memberRepository.existsByMemberId(memberId);
     }
 
     @Override

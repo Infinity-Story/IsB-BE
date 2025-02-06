@@ -27,4 +27,11 @@ public interface MemberService {
     List<MemberDTO> getMemberByStatus(MEMBER_STATUS memberStatus);
 
     ResponseEntity<String> updateMemberOut(int memberCode);
+
+    boolean checkIdExist(String memberId);
+
+
+    MemberDTO getMemberById(String memberId);
+
+    MemberDTO getMemberByMemberId(String memberId);
 }

@@ -1,13 +1,12 @@
 package com.infinity.isbbe.security;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class PasswordEncoderUtil {
+    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public static void main(String[] args) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String rawPassword = "1234";
-        String encodedPassword = passwordEncoder.encode(rawPassword);
-        System.out.println(encodedPassword);
+    public static String encodePassword(String rawPassword) {
+        return passwordEncoder.encode(rawPassword);
     }
 }

@@ -5,6 +5,7 @@ import com.infinity.isbbe.admin.dto.AdminDTO;
 import com.infinity.isbbe.admin.service.AdminService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,7 +44,11 @@ public class AdminController {
     @Operation(summary = "관리자 등록", description = "신규 관리자를 등록합니다.")
     @PostMapping("/create")
     public ResponseEntity<String> createAdmin(@RequestBody ResponseAdmin request) {
-        return adminService.createMember(request);
+        try {
+            return adminService.createAdmin(request);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     @Operation(summary = "관리자 수정", description = "기존 관리자를 수정합니다.")
