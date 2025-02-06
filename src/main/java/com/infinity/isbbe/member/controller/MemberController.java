@@ -45,6 +45,13 @@ public class MemberController {
         return ResponseEntity.ok(responseMember);
     }
 
+    @Operation(summary = "회원 ID로 회원 조회", description = "특정 회원을 조회합니다.")
+    @GetMapping("/detail/id/{memberId}")
+    public ResponseEntity<ResponseMember> getMemberByMemberId(@PathVariable String memberId) {
+        MemberDTO memberDTO = memberService.getMemberById(memberId);
+        return ResponseEntity.ok(new ResponseMember(memberDTO));
+    }
+
     // Id 중복 체크
     @GetMapping("/check-id")
     public ResponseEntity<String> checkId(@RequestParam String memberId) {

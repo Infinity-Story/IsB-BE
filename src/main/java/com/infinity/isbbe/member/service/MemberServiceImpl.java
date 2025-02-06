@@ -53,6 +53,14 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
+    public MemberDTO getMemberById(String memberId) {
+        Member member = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("Member not found"));
+        return new MemberDTO(member);
+    }
+
+    @Override
+    @Transactional
     public ResponseEntity<String> createMember(RequestMember request) {
         // adminId 중복 체크
         if (adminRepository.existsByAdminId(request.getMemberId())) {

@@ -29,4 +29,7 @@ public interface MemberService {
     ResponseEntity<String> updateMemberOut(int memberCode);
 
     boolean checkIdExist(String memberId);
+
+
+    MemberDTO getMemberById(String memberId);
 }
