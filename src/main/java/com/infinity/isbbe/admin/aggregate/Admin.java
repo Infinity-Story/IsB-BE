@@ -46,6 +46,9 @@ public class Admin {
     @Column(name = "admin_role")
     private int adminRole;
 
+    @Column(name = "profile_image")
+    private String profileImage;
+
     public Collection<SimpleGrantedAuthority> getRoles() {
         return Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }

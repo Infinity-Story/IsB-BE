@@ -48,6 +48,9 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private MEMBER_STATUS memberStatus;
 
+    @Column(name = "profile_image")
+    private String profileImage;
+
     public Collection<SimpleGrantedAuthority> getRoles() {
         return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
     }
