@@ -20,6 +20,7 @@ public class MemberDTO {
     private String memberEmail;
     private String memberPhone;
     private MEMBER_STATUS memberStatus;
+    private String profileImage;
 
     public MemberDTO(Member member) {
         this.memberCode = member.getMemberCode();
@@ -31,5 +32,6 @@ public class MemberDTO {
         this.memberEmail = member.getMemberEmail();
         this.memberPhone = member.getMemberPhone();
         this.memberStatus = member.getMemberStatus();
+        this.profileImage = member.getProfileImage();
     }
 }

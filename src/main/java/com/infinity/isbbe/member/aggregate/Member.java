@@ -52,6 +52,6 @@ public class Member {
     private String profileImage;
 
     public Collection<SimpleGrantedAuthority> getRoles() {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_MEMBER"));
     }
 }

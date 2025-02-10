@@ -22,6 +22,7 @@ public class ResponseMember {
     private String memberEnrollDate;
     private String memberUpdateDate;
     private MEMBER_STATUS memberStatus;
+    private String profileImage;
 
     public ResponseMember(Member member) {
         this.memberCode = member.getMemberCode();
@@ -33,6 +34,7 @@ public class ResponseMember {
         this.memberEnrollDate = member.getMemberEnrollDate();
         this.memberUpdateDate = member.getMemberUpdateDate();
         this.memberStatus = member.getMemberStatus();
+        this.profileImage = member.getProfileImage();
     }
 
     public ResponseMember(MemberDTO memberDTO) {
@@ -45,5 +47,6 @@ public class ResponseMember {
         this.memberEnrollDate = memberDTO.getMemberEnrollDate();
         this.memberUpdateDate = memberDTO.getMemberUpdateDate();
         this.memberStatus = memberDTO.getMemberStatus();
+        this.profileImage = memberDTO.getProfileImage();
     }
 }

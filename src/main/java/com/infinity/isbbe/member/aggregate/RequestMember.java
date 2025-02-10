@@ -18,4 +18,5 @@ public class RequestMember {
     private String memberPhone;
     private String memberEnrollDate;
     private MEMBER_STATUS memberStatus;
+    private String profileImage;
 }

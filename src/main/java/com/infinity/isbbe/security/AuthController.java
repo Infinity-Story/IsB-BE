@@ -35,7 +35,7 @@ public class AuthController {
         String username = userDetails.getUsername();
         String role = userDetails.getAuthorities().stream()
                 .findFirst()
-                .map(authority -> authority.getAuthority()) // 예시: ROLE_USER 또는 ROLE_ADMIN
+                .map(authority -> authority.getAuthority()) // 예시: ROLE_MEMBER 또는 ROLE_ADMIN
                 .orElse("ROLE_USER"); // 기본값: ROLE_USER
 
         // JWT 토큰 생성
@@ -61,7 +61,7 @@ public class AuthController {
         String username = userDetails.getUsername();
         String role = userDetails.getAuthorities().stream()
                 .findFirst()
-                .map(authority -> authority.getAuthority()) // 예시: ROLE_USER 또는 ROLE_ADMIN
+                .map(authority -> authority.getAuthority()) // 예시: ROLE_MEMBER 또는 ROLE_ADMIN
                 .orElse("ROLE_USER"); // 기본값: ROLE_USER
 
         // JWT 토큰 생성
