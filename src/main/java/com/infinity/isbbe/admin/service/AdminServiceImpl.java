@@ -100,8 +100,10 @@ public class AdminServiceImpl implements AdminService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDateTime = LocalDateTime.now().format(formatter);
 
+        String encodedPassword = PasswordEncoderUtil.encodePassword(request.getAdminPw());
+
         admin.setAdminId(request.getAdminId());
-        admin.setAdminPw(request.getAdminPw());
+        admin.setAdminPw(encodedPassword);
         admin.setAdminName(request.getAdminName());
         admin.setAdminUpdateDate(formattedDateTime);
         admin.setAdminEmail(request.getAdminEmail());

@@ -111,16 +111,18 @@ public class MemberServiceImpl implements MemberService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDateTime = LocalDateTime.now().format(formatter);
 
+        String encodedPassword = PasswordEncoderUtil.encodePassword(request.getMemberPw());
+
         member.setMemberName(request.getMemberName());
         member.setMemberEmail(request.getMemberEmail());
-        member.setMemberPw(request.getMemberPw());
+        member.setMemberPw(encodedPassword);
         member.setMemberId(request.getMemberId());
         member.setMemberPhone(request.getMemberPhone());
         member.setMemberUpdateDate(formattedDateTime);
 
         Member updatedMember = memberRepository.save(member);
 
-        logService.saveLog("root", LogStatus.수정, updatedMember.getMemberName(), "Member");
+//        logService.saveLog("root", LogStatus.수정, updatedMember.getMemberName(), "Member");
 
         return ResponseEntity.ok("회원 수정 완료");
     }
