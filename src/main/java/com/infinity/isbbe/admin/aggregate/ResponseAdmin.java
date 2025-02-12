@@ -21,6 +21,7 @@ public class ResponseAdmin {
     private String adminEnrollDate;
     private String adminUpdateDate;
     private int adminRole;
+    private String profileImage;
 
     public ResponseAdmin(Admin admin) {
         this.adminCode = admin.getAdminCode();
@@ -32,6 +33,7 @@ public class ResponseAdmin {
         this.adminEnrollDate = admin.getAdminEnrollDate();
         this.adminUpdateDate = admin.getAdminUpdateDate();
         this.adminRole = admin.getAdminRole();
+        this.profileImage = admin.getProfileImage();
     }
 
     public ResponseAdmin(AdminDTO adminDTO) {
@@ -44,5 +46,6 @@ public class ResponseAdmin {
         this.adminEnrollDate = adminDTO.getAdminEnrollDate();
         this.adminUpdateDate = adminDTO.getAdminUpdateDate();
         this.adminRole = adminDTO.getAdminRole();
+        this.profileImage = adminDTO.getProfileImage();
     }
 }

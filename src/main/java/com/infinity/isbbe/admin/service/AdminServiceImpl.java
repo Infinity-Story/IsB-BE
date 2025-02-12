@@ -50,6 +50,13 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public AdminDTO getAdminByAdminId(String adminId) {
+        Admin admin = adminRepository.findByAdminId(adminId)
+                .orElseThrow(()-> new RuntimeException("관리자 정보를 찾을 수 없습니다."));
+        return new AdminDTO(admin);
+    }
+
+    @Override
     public ResponseEntity<String> createAdmin(ResponseAdmin request) {
         // adminId 중복 체크
         if (adminRepository.existsByAdminId(request.getAdminId())) {

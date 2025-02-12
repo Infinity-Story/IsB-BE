@@ -14,4 +14,6 @@ public interface AdminService {
     ResponseEntity<String> createAdmin(ResponseAdmin request);
 
     ResponseEntity<String> updateAdmin(int adminCode, ResponseAdmin request);
+
+    AdminDTO getAdminByAdminId(String adminId);
 }

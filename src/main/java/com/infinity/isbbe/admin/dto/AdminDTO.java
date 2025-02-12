@@ -19,6 +19,7 @@ public class AdminDTO {
     private String adminEnrollDate;
     private String adminUpdateDate;
     private int adminRole;
+    private String profileImage;
 
     public AdminDTO(Admin admin) {
         this.adminCode = admin.getAdminCode();
@@ -30,5 +31,6 @@ public class AdminDTO {
         this.adminEnrollDate = admin.getAdminEnrollDate();
         this.adminUpdateDate = admin.getAdminUpdateDate();
         this.adminRole = admin.getAdminRole();
+        this.profileImage = admin.getProfileImage();
     }
 }

@@ -8,22 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -46,10 +41,8 @@ public class ProfileImageController {
     @PreAuthorize("hasRole('ROLE_MEMBER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> uploadProfileImage(@RequestParam("image") MultipartFile file, Authentication authentication) {
         try {
-            // 파일 이름 생성 및 URL-safe 인코딩
-            String originalFileName = file.getOriginalFilename();
-            String encodedFileName = URLEncoder.encode(originalFileName, StandardCharsets.UTF_8.toString());  // URL 인코딩
-            String fileName = System.currentTimeMillis() + "_" + encodedFileName;  // 파일 이름에 타임스탬프 추가
+            // 파일 이름 생성
+            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
             Path path = Paths.get(uploadDir, fileName);
 
             // 이미지 파일 저장
@@ -84,14 +77,13 @@ public class ProfileImageController {
         }
     }
 
-    @GetMapping("/image/{fileName}")
-    public ResponseEntity<Resource> getImage(@PathVariable String fileName) {
-        try {
-            // URL-safe 인코딩된 파일 이름을 UTF-8로 디코딩
-            String decodedFileName = URLDecoder.decode(fileName, StandardCharsets.UTF_8); // 예외 처리 필요 없음
 
+
+    @GetMapping("/image/{fileName}")
+    public ResponseEntity<Resource> getImage(@PathVariable String fileName) throws FileNotFoundException {
+        try {
             // 이미지 파일 경로를 구성
-            Path filePath = Paths.get(uploadDir).resolve(decodedFileName);
+            Path filePath = Paths.get(uploadDir).resolve(fileName);
             Resource resource = new UrlResource(filePath.toUri());
 
             if (resource.exists() || resource.isReadable()) {
@@ -99,11 +91,10 @@ public class ProfileImageController {
                         .contentType(MediaType.IMAGE_JPEG)  // 이미지 타입 맞추기 (필요시 수정)
                         .body(resource);
             } else {
-                throw new FileNotFoundException("File not found: " + decodedFileName);
+                throw new FileNotFoundException("File not found: " + fileName);
             }
-        } catch (IOException e) {
+        } catch (MalformedURLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-
 }

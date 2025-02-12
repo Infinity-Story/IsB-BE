@@ -1,5 +1,6 @@
 package com.infinity.isbbe.commonUser;
 
+import com.infinity.isbbe.admin.dto.AdminDTO;
 import com.infinity.isbbe.admin.service.AdminService;
 import com.infinity.isbbe.config.JwtTokenProvider;
 import com.infinity.isbbe.member.dto.MemberDTO;
@@ -59,5 +60,12 @@ public class UserController {
     public ResponseEntity<MemberDTO> getMemberByMemberId(@PathVariable String memberId) {
         MemberDTO memberDTO = memberService.getMemberByMemberId(memberId);
         return ResponseEntity.ok(memberDTO);
+    }
+
+    @Operation(summary = "관리자 ID로 관리자 정보 조회", description = "로그인한 관리자의 ID로 관리자 정보를 조회합니다.")
+    @GetMapping("/admin/{adminId}")
+    public ResponseEntity<AdminDTO> getAdminByAdminId(@PathVariable String adminId) {
+        AdminDTO adminDTO = adminService.getAdminByAdminId(adminId);
+        return ResponseEntity.ok(adminDTO);
     }
 }

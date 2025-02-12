@@ -17,4 +17,5 @@ public class RequestAdmin {
     private String adminPhone;
     private String adminEnrollDate;
     private int adminRole;
+    private String profileImage;
 }
