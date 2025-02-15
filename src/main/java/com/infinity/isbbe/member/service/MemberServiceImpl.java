@@ -59,6 +59,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public String findMemberIdByEmail(String email) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("해당 이메일로 등록된 회원이 없습니다."));
+        return member.getMemberId(); // Member 엔티티에서 ID 필드 이름에 맞게 수정
+    }
+
+    @Override
     @Transactional
     public MemberDTO getMemberById(String memberId) {
         Member member = memberRepository.findByMemberId(memberId)

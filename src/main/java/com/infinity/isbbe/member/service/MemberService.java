@@ -34,4 +34,6 @@ public interface MemberService {
     MemberDTO getMemberById(String memberId);
 
     MemberDTO getMemberByMemberId(String memberId);
+
+    String findMemberIdByEmail(String email);
 }

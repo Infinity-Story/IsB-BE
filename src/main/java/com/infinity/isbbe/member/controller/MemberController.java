@@ -118,4 +118,15 @@ public class MemberController {
         });
         return ResponseEntity.ok(responseMember);
     }
+
+    @Operation(summary = "이메일로 회원 ID 찾기", description = "이메일을 통해 회원의 ID를 찾습니다.")
+    @PostMapping("/find-id")
+    public ResponseEntity<String> findMemberIdByEmail(@RequestParam String email) {
+        try {
+            String memberId = memberService.findMemberIdByEmail(email);
+            return ResponseEntity.ok("회원 ID: " + memberId);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("해당 이메일로 등록된 회원이 없습니다.");
+        }
+    }
 }
