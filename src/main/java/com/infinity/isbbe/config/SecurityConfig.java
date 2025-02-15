@@ -29,6 +29,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())  // CSRF 비활성화
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/api/auth/login", "/api/auth/user-login").permitAll()  // 로그인 API는 누구나 접근 가능
+                        .requestMatchers("/admin/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")  // /admin/** 경로는 ADMIN 권한이 있어야 접근 가능
                         .requestMatchers("/member/**").permitAll()  // /member/create 경로는 인증 없이 접근 가능
                         .requestMatchers("/member/**").hasRole("MEMBER")  // 다른 /member/** 경로는 MEMBER 권한이 있어야 접근 가능

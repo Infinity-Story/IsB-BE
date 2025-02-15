@@ -100,14 +100,17 @@ public class AdminServiceImpl implements AdminService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDateTime = LocalDateTime.now().format(formatter);
 
-        String encodedPassword = PasswordEncoderUtil.encodePassword(request.getAdminPw());
+        // 비밀번호 암호화 (null 체크 후 암호화 수행)
+        String encodedPassword = (request.getAdminPw() != null && !request.getAdminPw().isEmpty())
+                ? PasswordEncoderUtil.encodePassword(request.getAdminPw())
+                : admin.getAdminPw();
 
-        admin.setAdminId(request.getAdminId());
         admin.setAdminPw(encodedPassword);
-        admin.setAdminName(request.getAdminName());
+        admin.setAdminId(request.getAdminId() != null ? request.getAdminId() : admin.getAdminId());
+        admin.setAdminName(request.getAdminName() != null ? request.getAdminName() : admin.getAdminName());
         admin.setAdminUpdateDate(formattedDateTime);
-        admin.setAdminEmail(request.getAdminEmail());
-        admin.setAdminPhone(request.getAdminPhone());
+        admin.setAdminEmail(request.getAdminEmail() != null ? request.getAdminEmail() : admin.getAdminEmail());
+        admin.setAdminPhone(request.getAdminPhone() != null ? request.getAdminPhone() : admin.getAdminPhone());
         admin.setAdminRole(request.getAdminRole());
 
         Admin updatedAdmin = adminRepository.save(admin);

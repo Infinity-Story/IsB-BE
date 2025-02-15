@@ -111,21 +111,24 @@ public class MemberServiceImpl implements MemberService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDateTime = LocalDateTime.now().format(formatter);
 
-        String encodedPassword = PasswordEncoderUtil.encodePassword(request.getMemberPw());
+        // 비밀번호 암호화 (null 체크 후 암호화 수행)
+        String encodedPassword = (request.getMemberPw() != null && !request.getMemberPw().isEmpty())
+                ? PasswordEncoderUtil.encodePassword(request.getMemberPw())
+                : member.getMemberPw();
 
-        member.setMemberName(request.getMemberName());
-        member.setMemberEmail(request.getMemberEmail());
+        // 필드별 null 체크 후 기존 값 유지
         member.setMemberPw(encodedPassword);
-        member.setMemberId(request.getMemberId());
-        member.setMemberPhone(request.getMemberPhone());
+        member.setMemberName(request.getMemberName() != null ? request.getMemberName() : member.getMemberName());
+        member.setMemberEmail(request.getMemberEmail() != null ? request.getMemberEmail() : member.getMemberEmail());
+        member.setMemberId(request.getMemberId() != null ? request.getMemberId() : member.getMemberId());
+        member.setMemberPhone(request.getMemberPhone() != null ? request.getMemberPhone() : member.getMemberPhone());
         member.setMemberUpdateDate(formattedDateTime);
 
-        Member updatedMember = memberRepository.save(member);
-
-//        logService.saveLog("root", LogStatus.수정, updatedMember.getMemberName(), "Member");
+        memberRepository.save(member);
 
         return ResponseEntity.ok("회원 수정 완료");
     }
+
 
     @Override
     @Transactional

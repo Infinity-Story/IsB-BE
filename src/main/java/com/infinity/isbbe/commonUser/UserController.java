@@ -28,17 +28,20 @@ public class UserController {
 
     // 현재 로그인한 사용자 정보 반환 (adminName 또는 memberName)
     @GetMapping("/me")
-    public ResponseEntity<Map<String, Object>> getUserInfo(@RequestHeader("Authorization") String token) {
-        // JWT 토큰에서 username을 추출
-        String username = jwtTokenProvider.getUsernameFromToken(token.substring(7));  // Bearer 토큰 처리
+    public ResponseEntity<Map<String, Object>> getUserInfo(@RequestHeader(value = "Authorization", required = false) String token) {
+        if (token == null || !token.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid token"));
+        }
+
+        String username = jwtTokenProvider.getUsernameFromToken(token.substring(7));
 
         if (username == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Unauthorized"));
         }
 
-        // 사용자 정보 (adminName, memberName) 반환
         return ResponseEntity.ok(Map.of("username", username));
     }
+
 
     // 로그인된 사용자가 Admin인지 Member인지 확인하고 역할별 처리
     @GetMapping("/role")
@@ -57,15 +60,27 @@ public class UserController {
 
     @Operation(summary = "회원 ID로 유저 정보 조회", description = "로그인한 회원의 ID로 유저 정보를 조회합니다.")
     @GetMapping("/member/{memberId}")
-    public ResponseEntity<MemberDTO> getMemberByMemberId(@PathVariable String memberId) {
+    public ResponseEntity<?> getMemberByMemberId(@PathVariable String memberId) {
         MemberDTO memberDTO = memberService.getMemberByMemberId(memberId);
+
+        if (memberDTO == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Member not found"));
+        }
+
         return ResponseEntity.ok(memberDTO);
     }
 
+
     @Operation(summary = "관리자 ID로 관리자 정보 조회", description = "로그인한 관리자의 ID로 관리자 정보를 조회합니다.")
     @GetMapping("/admin/{adminId}")
-    public ResponseEntity<AdminDTO> getAdminByAdminId(@PathVariable String adminId) {
+    public ResponseEntity<?> getAdminByAdminId(@PathVariable String adminId) {
         AdminDTO adminDTO = adminService.getAdminByAdminId(adminId);
+
+        if (adminDTO == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Admin not found"));
+        }
+
         return ResponseEntity.ok(adminDTO);
     }
+
 }
