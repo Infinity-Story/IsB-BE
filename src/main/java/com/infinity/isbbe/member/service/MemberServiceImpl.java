@@ -1,6 +1,7 @@
 package com.infinity.isbbe.member.service;
 
 import com.infinity.isbbe.admin.repository.AdminRepository;
+import com.infinity.isbbe.commonUser.MailService;
 import com.infinity.isbbe.log.etc.LogStatus;
 import com.infinity.isbbe.log.service.LogService;
 import com.infinity.isbbe.member.aggregate.Member;
@@ -9,6 +10,7 @@ import com.infinity.isbbe.member.dto.MemberDTO;
 import com.infinity.isbbe.member.etc.MEMBER_STATUS;
 import com.infinity.isbbe.member.repository.MemberRepository;
 import com.infinity.isbbe.security.PasswordEncoderUtil;
+import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -25,11 +28,13 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final LogService logService;
     private final AdminRepository adminRepository;
+    private final MailService mailService;
 
-    public MemberServiceImpl(MemberRepository memberRepository, LogService logService, AdminRepository adminRepository) {
+    public MemberServiceImpl(MemberRepository memberRepository, LogService logService, AdminRepository adminRepository, MailService mailService) {
         this.memberRepository = memberRepository;
         this.logService = logService;
         this.adminRepository = adminRepository;
+        this.mailService = mailService;
     }
 
     @Override
@@ -60,9 +65,36 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public String findMemberIdByEmail(String email) {
-        Member member = memberRepository.findByEmail(email)
+        Member member = memberRepository.findByMemberEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("해당 이메일로 등록된 회원이 없습니다."));
         return member.getMemberId(); // Member 엔티티에서 ID 필드 이름에 맞게 수정
+    }
+
+    @Override
+    public String findMemberIdAndSendEmail(String memberEmail) {
+        System.out.println("Before processing email: " + memberEmail);
+
+        memberEmail = memberEmail.trim().toLowerCase();
+
+        System.out.println("After processing email: " + memberEmail);
+
+        System.out.println("Executing findByMemberEmail...");
+        Optional<Member> memberOptional = memberRepository.findByMemberEmail(memberEmail);
+
+        if (memberOptional.isPresent()) {
+            Member member = memberOptional.get();
+            System.out.println("Found member: " + member.getMemberEmail() + ", ID: " + member.getMemberId());
+
+            String memberId = member.getMemberId();
+            String subject = "아이디 찾기 안내";
+            String content = "안녕하세요, 요청하신 아이디는 다음과 같습니다: " + memberId;
+
+            mailService.sendEmail(memberEmail, subject, content);
+            return "이메일이 성공적으로 발송되었습니다.";
+        } else {
+            System.out.println("No member found with email: " + memberEmail);
+            throw new IllegalArgumentException("입력하신 정보와 일치하는 회원이 존재하지 않습니다.");
+        }
     }
 
     @Override

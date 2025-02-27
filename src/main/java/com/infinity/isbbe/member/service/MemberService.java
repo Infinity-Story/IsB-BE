@@ -3,6 +3,7 @@ package com.infinity.isbbe.member.service;
 import com.infinity.isbbe.member.aggregate.RequestMember;
 import com.infinity.isbbe.member.dto.MemberDTO;
 import com.infinity.isbbe.member.etc.MEMBER_STATUS;
+import jakarta.mail.MessagingException;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -36,4 +37,6 @@ public interface MemberService {
     MemberDTO getMemberByMemberId(String memberId);
 
     String findMemberIdByEmail(String email);
+
+    String findMemberIdAndSendEmail(String memberEmail);
 }

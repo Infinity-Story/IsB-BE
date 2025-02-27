@@ -3,6 +3,8 @@ package com.infinity.isbbe.member.repository;
 import com.infinity.isbbe.member.aggregate.Member;
 import com.infinity.isbbe.member.etc.MEMBER_STATUS;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,5 +20,7 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
 
     boolean existsByMemberId(String memberId);
 
-    Optional<Member> findByMemberEmail(String email);
+    Optional<Member> findByMemberEmail(@Param("email") String email);
+    Optional<Member> findByMemberEmailIgnoreCase(String memberEmail);
+
 }
