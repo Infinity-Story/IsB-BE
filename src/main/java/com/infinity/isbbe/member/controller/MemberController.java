@@ -131,12 +131,25 @@ public class MemberController {
 //        }
 //    }
 
-    @PostMapping("/find-id")
-    public ResponseEntity<String> findMemberId(
-            @RequestParam String memberEmail) {
+    // 1. 인증번호 요청 API
+    @PostMapping("/request-verification-code")
+    public ResponseEntity<String> requestVerificationCode(@RequestParam String memberEmail) {
         try {
-            String message = memberService.findMemberIdAndSendEmail(memberEmail);
+            String message = memberService.sendVerificationCode(memberEmail);
             return ResponseEntity.ok(message);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // 2. 인증번호 확인 및 아이디 반환 API
+    @PostMapping("/verify-code")
+    public ResponseEntity<String> verifyCodeAndGetId(
+            @RequestParam String memberEmail,
+            @RequestParam String verificationCode) {
+        try {
+            String memberId = memberService.verifyCodeAndReturnId(memberEmail, verificationCode);
+            return ResponseEntity.ok("회원님의 아이디: " + memberId);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

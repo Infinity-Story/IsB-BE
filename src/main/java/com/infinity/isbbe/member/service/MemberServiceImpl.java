@@ -12,15 +12,18 @@ import com.infinity.isbbe.member.repository.MemberRepository;
 import com.infinity.isbbe.security.PasswordEncoderUtil;
 import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -29,12 +32,16 @@ public class MemberServiceImpl implements MemberService {
     private final LogService logService;
     private final AdminRepository adminRepository;
     private final MailService mailService;
+    private final StringRedisTemplate redisTemplate;
 
-    public MemberServiceImpl(MemberRepository memberRepository, LogService logService, AdminRepository adminRepository, MailService mailService) {
+    private static final int CODE_LENGTH = 6;
+
+    public MemberServiceImpl(MemberRepository memberRepository, LogService logService, AdminRepository adminRepository, MailService mailService, StringRedisTemplate redisTemplate) {
         this.memberRepository = memberRepository;
         this.logService = logService;
         this.adminRepository = adminRepository;
         this.mailService = mailService;
+        this.redisTemplate = redisTemplate;
     }
 
     @Override
@@ -95,6 +102,56 @@ public class MemberServiceImpl implements MemberService {
             System.out.println("No member found with email: " + memberEmail);
             throw new IllegalArgumentException("입력하신 정보와 일치하는 회원이 존재하지 않습니다.");
         }
+    }
+
+    @Override
+    public String sendVerificationCode(String memberEmail) {
+        memberEmail = memberEmail.trim().toLowerCase();
+        Optional<Member> memberOptional = memberRepository.findByMemberEmail(memberEmail);
+
+        if (memberOptional.isEmpty()) {
+            throw new IllegalArgumentException("입력하신 정보와 일치하는 회원이 존재하지 않습니다.");
+        }
+
+        // 6자리 랜덤 인증번호 생성
+        String verificationCode = generateVerificationCode();
+
+        // Redis에 인증번호 저장 (유효기간: 5분)
+        redisTemplate.opsForValue().set("VERIFY_" + memberEmail, verificationCode, 5, TimeUnit.MINUTES);
+
+        // 이메일 전송
+        String subject = "아이디 찾기 인증번호 안내";
+        String content = "인증번호: <b>" + verificationCode + "</b> (5분 내에 입력해주세요.)";
+
+        mailService.sendEmail(memberEmail, subject, content);
+        return "인증번호가 이메일로 전송되었습니다.";
+    }
+
+    private String generateVerificationCode() {
+        SecureRandom random = new SecureRandom();
+        StringBuilder code = new StringBuilder();
+        for (int i = 0; i < CODE_LENGTH; i++) {
+            code.append(random.nextInt(10)); // 0~9 랜덤 숫자
+        }
+        return code.toString();
+    }
+
+    @Override
+    public String verifyCodeAndReturnId(String memberEmail, String verificationCode) {
+        memberEmail = memberEmail.trim().toLowerCase();
+
+        // Redis에서 인증번호 가져오기
+        String storedCode = redisTemplate.opsForValue().get("VERIFY_" + memberEmail);
+
+        if (storedCode == null || !storedCode.equals(verificationCode)) {
+            throw new IllegalArgumentException("인증번호가 일치하지 않거나 만료되었습니다.");
+        }
+
+        // 인증번호가 맞으면 회원 ID 반환
+        Member member = memberRepository.findByMemberEmail(memberEmail)
+                .orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
+
+        return member.getMemberId();
     }
 
     @Override

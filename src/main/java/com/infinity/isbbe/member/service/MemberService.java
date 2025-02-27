@@ -39,4 +39,8 @@ public interface MemberService {
     String findMemberIdByEmail(String email);
 
     String findMemberIdAndSendEmail(String memberEmail);
+
+    String sendVerificationCode(String memberEmail);
+
+    String verifyCodeAndReturnId(String memberEmail, String verificationCode);
 }
